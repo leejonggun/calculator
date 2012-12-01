@@ -1,15 +1,15 @@
 
 ・概要
-Lispを参考に計算機を作りました。
-/src -> 計算機のソースコードがあります。全部でmain.c, tokenize.c, parse.c, print.c, check.c, eval.c
-/include -> ヘッダーファイルがあります。main.hのみ。
-/test -> test コードが入ってます。
-/README.txt -> このファイルです。
+Lispを参考に計算機を作ります。
+/src -> 計算機のソースコード。全部でmain.c, tokenize.c, parse.c, print.c, check.c, eval.c
+/include -> ヘッダーファイル。main.hのみ。
+/test -> test コード。
+/README.txt -> 説明書。
 /CMakeLists.txt -> cmakeの設定ファイル
 /TIME.txt -> この計算機を作るのにかかった時間&作業内容
 
 ・コンパイル&実行方法：
-hoge $ git clone https://github.com/leejonggun/calculator
+hoge $ git clone https://github.com/leejonggun/calculator.git
 hoge $ cd calculator
 hoge $ mkdir build
 hoge $ cd build
