@@ -1,0 +1,13 @@
+計算機作成にかかった時間
+
+日にち,	開始~終了,		作業時間	作業内容
+11/28,	10:10~10:35,	25m			main, tokenize
+11/28,	20:10~21:40,	90m			tokenize
+11/28,	23:00~00:40,	100m		tokenize
+11/29,	10:30~12:20,	110m		parse, print function for Debugging
+11/30,	10:20~10:50,	30m			parse
+11/30,	11:40~13:40,	120m		tokenize, parse
+11/30,	23:20~6:00,		340m		syntax check, eval, parse
+12/01,	11:00~13:00,	120m		fix parse bugs(complete construct AST(Abstract Structure Tree))
+12/01,	14:00~17:00,	180m		comp operator... and the codes(espectially tokenize.c and eval.c) have become unreadable...orz
+12/01,	22:00~00:30,	150m		fix eval bugs & refactoring... and realize multiply and divide doesn't work...>_<
