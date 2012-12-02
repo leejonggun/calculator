@@ -1,7 +1,7 @@
 //Written bu Joseph
 #include "main.h"
 
-static int int_calc(token_t *result, token_t *token);
+static int int_calc(token_t *token);
 static token_t *double_calc(token_t *result, token_t *token);
 static int i_add (int left_value, int right_value);
 static int i_sub (int left_value, int right_value);
@@ -23,32 +23,66 @@ static token_t *after_calc(token_t *token) {
 		tree_free(token->car);
 		free(token);
 		token = token->cdr;
+		if (token->tt == CLOSE) {
+			return token;
+		}
 	} while (token->car->tt != OPERATOR);
 	return token;
 }
 
-static token_t *calculate_priority(token_t *ret, token_t *token) {
-	token_t *root = token;
+static void cpy_token(token_t *dest, token_t *src) {
+	dest->tt = src->tt;
+	dest->cdr = NULL;
+	switch (dest->tt) {
+		case OPEN:
+		case CLOSE:
+			dest->car = src->car;
+			break;
+		case INT:
+			dest->integer = src->integer;
+			break;
+		case DOUBLE:
+			dest->decimal = src->decimal;
+			break;
+		case CHAR:
+			/*TODO For Syntax*/
+			break;
+		case OPERATOR:
+			dest->str = (char *)malloc(sizeof(char) * 2);
+			dest->str = strncpy(dest->str, src->str, 1);
+			dest->str[2] = '\0';
+			break;
+	}
+}
+/*calculate multiplication and division first.*/
+static void calculate_priority( token_t *token) {
+	token_t *ret = NULL;
 	while (token->cdr->tt != CLOSE) {
+		ret = token_init();
 		if ((token->cdr->car->tt == OPERATOR) && (token->cdr->car->counter > 1)) {
-			ret->integer = int_calc(ret, token);
+			cpy_token(ret, token->car);
+			ret->integer = int_calc(token);
+/*remake tree*/
 			tree_free(token->car);
 			token->car = ret;
 			token->cdr = after_calc(token->cdr);
+/*remake tree*/
 		} else {
 			token = token->cdr->cdr;
 		}
 	}
-	return root;
+	free(ret);
 }
 
-static token_t *calculate(token_t *ret, token_t *token) {
-	token_t *root = token;
+/*calculate addition and subtraction.*/
+static token_t *calculate(token_t *token) {
+	int value;
 	while (token->cdr->tt != CLOSE) {
-		ret->integer = int_calc(ret, token);
+		value = int_calc(token);
 		token = token->cdr->cdr;
+		token->car->integer = value;
 	}
-	return root;
+	return token;
 }
 token_t *eval (token_t *token) {
 	token_t *ret = NULL;
@@ -57,12 +91,11 @@ token_t *eval (token_t *token) {
 			/*priority can be OPERATOR-token->counter.
 			 add->counter = 0, sub->counter = 1 < mul->counter = 2, div->counter = 3
 			 */
-			//calculate multiplication and division first.
-			ret = token_init();
-			ret = calculate_priority(ret, token);
-			//calculate addition and subtraction.
-			ret = calculate(ret, token);
-			printf("ret->tt = %s, ret->integer = %d\n", type_name[ret->tt], ret->integer);
+			calculate_priority(token);
+			tree_print(token);
+/***************************/
+
+			ret = calculate(token);
 			return ret;
 		case INT:
 			return token;
@@ -91,13 +124,12 @@ static token_t *set_retvalue (token_t *result, int ivalue, double fvalue, token_
 
 /*token->car is left-num to be calculated, token->cdr->car is operator, and token->cdr->cdr->car is right-num to be calculated*/
 /*This function is to calculate left_token and right_token*/
-static int int_calc(token_t *ret, token_t *token) {
+static int int_calc(token_t *token) {
 	/*ALL INT*/
-	token_t *tmp = token;
-	token_t *operator = tmp->cdr->car;//operator
+	token_t *operator = token->cdr->car;//operator
 	int value, result;
-	result = eval(tmp->car)->integer;//left number
-	value = (eval(tmp->cdr->cdr->car))->integer;//right number
+	result = (eval(token->car))->integer;//left number
+	value = (eval(token->cdr->cdr->car))->integer;//right number
 	return (*i_func[operator->counter])(result, value);
 	}
 
