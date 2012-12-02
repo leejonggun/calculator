@@ -98,7 +98,6 @@ void tree_free(token_t *root) {
 				free(del);
 				del = del->cdr;
 			}
-			break;
 		case CLOSE:
 		case INT:
 		case DOUBLE:

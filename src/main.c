@@ -74,6 +74,7 @@ void readfile (char *filename) {
 
 		/*eval*/
 		if ((result = eval(tree_root)) == NULL) {
+			printf("result->tt = %s, result->integer = %d\n", type_name[result->tt], result->integer);
 			continue;
 		}
 

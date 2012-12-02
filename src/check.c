@@ -1,28 +1,33 @@
 //Written by Joseph
 #include "main.h"
 
-int position_check(token_t *root) {
-	if (root->tt == CLOSE) {
+int check_priority(token_t *tree) {
+
+	return 0;
+}
+
+int position_check(token_t *tree) {
+	if (tree->tt == CLOSE) {
 		printf("No token between \'(\'~\')\'\n");
 		return -1;
-	} else if (root->car->tt == OPERATOR) {
+	} else if (tree->car->tt == OPERATOR) {
 		printf("operator can\'t be just after the first \'(\'\n");
 	}
-	while (root->cdr->tt != CLOSE) {
-		if (root->car->tt == root->cdr->car->tt ||
-				(root->car->tt == INT && root->cdr->car->tt == DOUBLE) ||
-				(root->car->tt == DOUBLE && root->cdr->car->tt == INT)
+	while (tree->cdr->tt != CLOSE) {
+		if (tree->car->tt == tree->cdr->car->tt ||
+				(tree->car->tt == INT && tree->cdr->car->tt == DOUBLE) ||
+				(tree->car->tt == DOUBLE && tree->cdr->car->tt == INT)
 				) {
-			if (root->car->tt == OPERATOR)
+			if (tree->car->tt == OPERATOR)
 				printf("No number between operators\n");
-			else if (root->car->tt == INT || root->car->tt == DOUBLE)
+			else if (tree->car->tt == INT || tree->car->tt == DOUBLE)
 				printf("No operator between numbers\n");
 			return -1;
 		}
-		root = root->cdr;
+		tree = tree->cdr;
 	}
 	/*The token type before CLOSE bracket must be INT or DOUBLE*/
-	if (root->car->tt != INT && root->car->tt != DOUBLE) {
+	if (tree->car->tt != INT && tree->car->tt != DOUBLE) {
 		printf("operator can\'t be just before the last \')\'\n");
 		return -1;
 	}
