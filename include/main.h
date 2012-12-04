@@ -49,3 +49,10 @@ void list_print(token_t *root);
 /*check.c*/
 int syntax_check(token_t *root, int count);
 int position_check(token_t *root);
+
+/*i_calculate.c*/
+void i_calculate_priority(token_t *token);
+token_t *i_calculate(token_t *token);
+/*f_calculate.c*/
+void f_calculate_priority(token_t *token);
+token_t *f_calculate(token_t *token);

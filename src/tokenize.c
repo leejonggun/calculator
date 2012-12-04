@@ -47,6 +47,10 @@ token_t *Tokenize(const char *str, int index) {
 					index++;
 				}
 				break;
+			case '^':
+				/*TODO*/
+			case '!':
+				/*TODO*/
 			case '+':
 				list = set_counter(list, &str[index], 0, OPERATOR);
 				list->cdr = token_init();
@@ -81,7 +85,6 @@ token_t *Tokenize(const char *str, int index) {
 			case '7':
 			case '8':
 			case '9':
-				//printf("Tokenize NUMBER\n");
 				size = 1;
 				while (isdigit(str[index+size]) > 0) {
 					size++;
@@ -100,7 +103,7 @@ token_t *Tokenize(const char *str, int index) {
 				list = list->cdr;
 				break;
 			default:
-				printf("You can't input alphaber.\n");
+				printf("You can't input alphabet.\n");
 				return NULL;
 		}
 	}
@@ -110,6 +113,7 @@ token_t *Tokenize(const char *str, int index) {
 	return root;
 }
 
+/*init a token to construct list & tree*/
 token_t *token_init() {
 	token_t *new = (token_t *)malloc(sizeof(token_t));
 	new->tt = OPEN;
@@ -119,7 +123,7 @@ token_t *token_init() {
 	return new;
 }
 
-/*set one size charater bracket*/
+/*set one size charater*/
 token_t *set_counter(token_t *open, const char *buf, int count, token_type TYPE) {
 	open->tt = TYPE;
 	open->counter = count;
@@ -128,7 +132,7 @@ token_t *set_counter(token_t *open, const char *buf, int count, token_type TYPE)
 	open->str[1] = '\0';
 	return open;
 }
-/*set token to cons list*/
+/*set multi size token to cons list*/
 token_t *set_token(token_t *open, const char *buf, int buf_len, token_type TYPE) {
 	open->tt = TYPE;
 	open->str_size = buf_len;
@@ -138,7 +142,7 @@ token_t *set_token(token_t *open, const char *buf, int buf_len, token_type TYPE)
 	return open;
 }
 
-/*free all elements in list*/
+/*free all tokens in list*/
 void list_free(token_t *root) {
 	token_t *del = root;
 	switch(del->tt) {

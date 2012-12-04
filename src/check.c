@@ -1,11 +1,6 @@
 //Written by Joseph
 #include "main.h"
 
-int check_priority(token_t *tree) {
-
-	return 0;
-}
-
 int position_check(token_t *tree) {
 	if (tree->tt == CLOSE) {
 		printf("No token between \'(\'~\')\'\n");

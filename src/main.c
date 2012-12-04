@@ -33,8 +33,7 @@ void commandline() {
 		if ((result = eval(tree_root)) == NULL) {
 			continue;
 		}
-		printf("main\n");
-		tree_print(result);
+//		tree_print(result);
 
 
 		if (result->tt == INT) {
