@@ -18,7 +18,7 @@ double (*f_func[])(double, double) = { f_add, f_sub, f_mul, f_div };
 /*	token->cdr->cdr->cdr->car->tt should be next OPERATOR. This is garanteed by syntax_check()
 	But, token->cdr->car->tt is OPERATOR to have been calculated by above int_calc()*/
 //move token->cdr->cdr because token->cdr, token->cdr->cdr has been calculated.
-static token_t *after_calc(token_t *token) {
+static token_t *remake_tree(token_t *token) {
 	do {
 		tree_free(token->car);
 		free(token);
@@ -54,48 +54,71 @@ static void cpy_token(token_t *dest, token_t *src) {
 			break;
 	}
 }
-/*calculate multiplication and division first.*/
-static void calculate_priority( token_t *token) {
+/*calculate multiplication and division first.
+ And remake AST. After this function, The operator in AST will be only +, -*/
+static void calculate_priority(token_t *token) {
 	token_t *ret = NULL;
 	while (token->cdr->tt != CLOSE) {
-		ret = token_init();
 		if ((token->cdr->car->tt == OPERATOR) && (token->cdr->car->counter > 1)) {
-			cpy_token(ret, token->car);
+			ret = token_init();
+			ret->tt = INT;
 			ret->integer = int_calc(token);
 /*remake tree*/
 			tree_free(token->car);
 			token->car = ret;
-			token->cdr = after_calc(token->cdr);
+			token->cdr = remake_tree(token->cdr);
 /*remake tree*/
 		} else {
 			token = token->cdr->cdr;
 		}
 	}
-	free(ret);
 }
 
+/*
+  calculate all +, -
+  set the value ret;
+  return ret;
+  */
 /*calculate addition and subtraction.*/
 static token_t *calculate(token_t *token) {
-	int value;
+	token_t *ret = NULL;
 	while (token->cdr->tt != CLOSE) {
-		value = int_calc(token);
-		token = token->cdr->cdr;
-		token->car->integer = value;
+		if ((token->cdr->car->tt == OPERATOR)) {
+			ret = token_init();
+			ret->tt = INT;
+			cpy_token(ret, token->car);
+			ret->integer = int_calc(token);
+/*remake tree*/
+			tree_free(token->car);
+			token->car = ret;
+			token->cdr = remake_tree(token->cdr);
+/*remake tree*/
+		} else {
+			token = token->cdr->cdr;
+		}
 	}
-	return token;
+	if (token->cdr->tt == CLOSE) {
+		return token->car;
+	}
+	return ret;
 }
+/*
+   return the token has a value.
+   return token which type is INT or DOUBLE.
+   */
 token_t *eval (token_t *token) {
 	token_t *ret = NULL;
 	switch (token->tt) {
 		case OPEN:
+			ret = token_init();
 			/*priority can be OPERATOR-token->counter.
 			 add->counter = 0, sub->counter = 1 < mul->counter = 2, div->counter = 3
 			 */
 			calculate_priority(token);
-			tree_print(token);
-/***************************/
+//			tree_print(token);
 
 			ret = calculate(token);
+//			tree_print(ret);
 			return ret;
 		case INT:
 			return token;

@@ -72,14 +72,15 @@ void readfile (char *filename) {
 		if ((tree_root = Parse(list_root)) == NULL) {
 			continue;
 		}
-		tree_print(tree_root);
+//		tree_print(tree_root);
 		list_free(list_root);
 
 		/*eval*/
 		if ((result = eval(tree_root)) == NULL) {
-			printf("result->tt = %s, result->integer = %d\n", type_name[result->tt], result->integer);
 			continue;
 		}
+//		tree_print(result);
+
 
 		if (result->tt == INT) {
 			printf("Answer = %d\n", result->integer);
@@ -104,11 +105,3 @@ int main(int argc, char *argv[]) {
 	}
 	return 0;
 }
-/*TODO
- Tokenize
- Parse
- Eval(VM)
- comp
- if
- while
- */

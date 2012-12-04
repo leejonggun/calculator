@@ -11,3 +11,5 @@
 12/01,	11:00~13:00,	120m		fix parse bugs(complete construct AST(Abstract Structure Tree))
 12/01,	14:00~17:00,	180m		comp operator... and the codes(espectially tokenize.c and eval.c) have become unreadable...orz
 12/01,	22:00~00:30,	150m		fix eval bugs & refactoring... and realize multiply and divide doesn't work...>_<
+12/02,	17:00~21:30,	270m		My algorism is not good!? I have to organize my thought, algorithm, API.
+12/03,	11:30~13:30,	120m		multiply and divide work! It means this calculater works properly:) Next, refactoring and write documents.

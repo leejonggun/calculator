@@ -27,7 +27,7 @@ int position_check(token_t *tree) {
 		tree = tree->cdr;
 	}
 	/*The token type before CLOSE bracket must be INT or DOUBLE*/
-	if (tree->car->tt != INT && tree->car->tt != DOUBLE) {
+	if (tree->car->tt == OPERATOR) {
 		printf("operator can\'t be just before the last \')\'\n");
 		return -1;
 	}
