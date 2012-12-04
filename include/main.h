@@ -31,7 +31,7 @@ typedef struct token_t {
 } token_t;
 
 /*tokenize.c*/
-token_t *Tokenize(const char *str, int index);
+token_t *Tokenize(const char *str);
 token_t *token_init();
 void list_free(token_t *root);
 

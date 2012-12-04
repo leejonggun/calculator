@@ -1,9 +1,9 @@
 //Written by Joseph
 #include "main.h"
 
-token_t *set_counter(token_t *open, const char *buf, int count, token_type TYPE);
-token_t *set_token(token_t *root, const char *buf, int buf_len, token_type TYPE);
-token_t *token_init();
+void set_char(token_t *open, const char *buf, int count, token_type TYPE);
+void set_str(token_t *root, const char *buf, int buf_len, token_type TYPE);
+token_t *token_init(token_type tt);
 
 int pass_space(const char *input, int index) {
 	int counter = 0;
@@ -13,8 +13,8 @@ int pass_space(const char *input, int index) {
 	return (index + counter);
 }
 
-token_t *Tokenize(const char *str, int index) {
-	int size = 0;
+token_t *Tokenize(const char *str) {
+	int size, index = 0;
 	int count = 0;// When OPEN bracket, counter++. When CLOSE bracket, counter--.
 	token_t *list = (token_t*)malloc(sizeof(token_t));
 	token_t *root = list;
@@ -28,20 +28,20 @@ token_t *Tokenize(const char *str, int index) {
 				break;
 			case '(':
 				count++;
-				list = set_counter(list, &str[index], count, OPEN);
-				list->cdr = token_init();
+				set_char(list, &str[index], count, OPEN);
+				list->cdr = token_init(OPEN);
 				list = list->cdr;
 				index++;
 				break;
 			case ')':
 				index = pass_space(str, index);
 				if (index == str_len) {
-					list = set_counter(list, &str[index], count, CLOSE);
+					set_char(list, &str[index], count, CLOSE);
 					list->cdr = NULL;
 					count--;
 				} else {
-					list = set_counter(list, &str[index], count, CLOSE);
-					list->cdr = token_init();
+					set_char(list, &str[index], count, CLOSE);
+					list->cdr = token_init(CLOSE);
 					list = list->cdr;
 					count--;
 					index++;
@@ -52,26 +52,26 @@ token_t *Tokenize(const char *str, int index) {
 			case '!':
 				/*TODO*/
 			case '+':
-				list = set_counter(list, &str[index], 0, OPERATOR);
-				list->cdr = token_init();
+				set_char(list, &str[index], 0, OPERATOR);
+				list->cdr = token_init(OPERATOR);
 				list = list->cdr;
 				index++;
 				break;
 			case '-':
-				list = set_counter(list, &str[index], 1, OPERATOR);
-				list->cdr = token_init();
+				set_char(list, &str[index], 1, OPERATOR);
+				list->cdr = token_init(OPERATOR);
 				list = list->cdr;
 				index++;
 				break;
 			case '*':
-				list = set_counter(list, &str[index], 2, OPERATOR);
-				list->cdr = token_init();
+				set_char(list, &str[index], 2, OPERATOR);
+				list->cdr = token_init(OPERATOR);
 				list = list->cdr;
 				index++;
 				break;
 			case '/':
-				list = set_counter(list, &str[index], 3, OPERATOR);
-				list->cdr = token_init();
+				set_char(list, &str[index], 3, OPERATOR);
+				list->cdr = token_init(OPERATOR);
 				list = list->cdr;
 				index++;
 				break;
@@ -94,12 +94,12 @@ token_t *Tokenize(const char *str, int index) {
 					while (isdigit(str[index+size]) > 0) {
 						size++;
 					}
-					list = set_token(list, &str[index], size, DOUBLE);
+					set_str(list, &str[index], size, DOUBLE);
 				} else {
-					list = set_token(list, &str[index], size, INT);
+					set_str(list, &str[index], size, INT);
 				}
 				index += size;
-				list->cdr = token_init();
+				list->cdr = token_init(INT);
 				list = list->cdr;
 				break;
 			default:
@@ -114,9 +114,9 @@ token_t *Tokenize(const char *str, int index) {
 }
 
 /*init a token to construct list & tree*/
-token_t *token_init() {
+token_t *token_init(token_type tt) {
 	token_t *new = (token_t *)malloc(sizeof(token_t));
-	new->tt = OPEN;
+	new->tt = tt;
 	new->str_size = 0;
 	new->cdr = NULL;
 	new->str = NULL;
@@ -124,22 +124,20 @@ token_t *token_init() {
 }
 
 /*set one size charater*/
-token_t *set_counter(token_t *open, const char *buf, int count, token_type TYPE) {
+void set_char(token_t *open, const char *buf, int count, token_type TYPE) {
 	open->tt = TYPE;
 	open->counter = count;
 	open->str = (char *)malloc(sizeof(char) * 2);
 	open->str = strncpy(open->str, buf, 1);
 	open->str[1] = '\0';
-	return open;
 }
 /*set multi size token to cons list*/
-token_t *set_token(token_t *open, const char *buf, int buf_len, token_type TYPE) {
+void set_str(token_t *open, const char *buf, int buf_len, token_type TYPE) {
 	open->tt = TYPE;
 	open->str_size = buf_len;
 	open->str = (char *)malloc(sizeof(char) * (buf_len));
 	open->str = strncpy(open->str, buf, buf_len);
 	open->str[buf_len] = '\0';
-	return open;
 }
 
 /*free all tokens in list*/

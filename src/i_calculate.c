@@ -40,8 +40,7 @@ void i_calculate_priority(token_t *token) {
 	token_t *ret = NULL;
 	while (token->cdr->tt != CLOSE) {
 		if ((token->cdr->car->tt == OPERATOR) && (token->cdr->car->counter > 1)) {
-			ret = token_init();
-			ret->tt = INT;
+			ret = token_init(INT);
 			ret->integer = int_calc(token);
 /*remake tree*/
 			tree_free(token->car);
@@ -59,8 +58,7 @@ token_t *i_calculate(token_t *token) {
 	token_t *ret = NULL;
 	while (token->cdr->tt != CLOSE) {
 		if ((token->cdr->car->tt == OPERATOR)) {
-			ret = token_init();
-			ret->tt = INT;
+			ret = token_init(INT);
 			ret->integer = int_calc(token);
 /*remake tree*/
 			tree_free(token->car);

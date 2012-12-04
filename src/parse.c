@@ -43,7 +43,7 @@ static int check_nest(token_t *list) {
 token_t *Parse(token_t *root) {
 	int counter = 0;//to parse nests
 	token_t *list = root;
-	token_t *token_tree = token_init();
+	token_t *token_tree = token_init(OPEN);
 	token_t *token_root;
 	while (list->tt != CLOSE) {
 		switch (list->tt) {
@@ -59,7 +59,7 @@ token_t *Parse(token_t *root) {
 					counter += check_nest(list);
 				}
 				token_tree->car = Parse(list);
-				token_tree->cdr = token_init();
+				token_tree->cdr = token_init(OPEN);
 				token_tree = token_tree->cdr;
 					do {
 					/*skip '( ~ )' nest*/

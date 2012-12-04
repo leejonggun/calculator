@@ -17,7 +17,7 @@ void commandline() {
 		add_history(line);
 
 		/*tokenize*/
-		if ((list_root = Tokenize(line, 0)) == NULL) {
+		if ((list_root = Tokenize(line)) == NULL) {
 			continue;
 		}
 //		list_print(list_root);
@@ -62,7 +62,7 @@ void readfile (char *filename) {
 		printf("buf = %s\n", buf);
 
 		/*tokenize*/
-		if ((list_root = Tokenize(buf, 0)) == NULL) {
+		if ((list_root = Tokenize(buf)) == NULL) {
 			continue;
 		}
 //		list_print(list_root);
