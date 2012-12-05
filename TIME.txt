@@ -13,3 +13,5 @@
 12/01,	22:00~00:30,	150m		fix eval bugs & refactoring... and realize multiply and divide doesn't work...>_<
 12/02,	17:00~21:30,	270m		My algorism is not good!? I have to organize my thought, algorithm, API.
 12/03,	11:30~13:30,	120m		multiply and divide work! It means this calculater works properly:) Next, refactoring and write documents.
+12/04,	22:20~01:50,	210m		refactoring tokenize, parse, eval and writing documents
+12/05,	20:50~23:00,	130m		try exponential(power) and factorial, write documents
