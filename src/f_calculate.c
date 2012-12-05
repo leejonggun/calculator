@@ -6,8 +6,9 @@ static double f_sub (double left_value, double right_value);
 static double f_mul (double left_value, double right_value);
 static double f_div (double left_value, double right_value);
 static double f_pow (double left_value, double right_value);
+static double f_fac (double left_value, double right_value);
 
-static double (*f_func[])(double, double) = { f_add, f_sub, f_mul, f_div, f_pow };
+static double (*f_func[])(double, double) = { f_add, f_sub, f_mul, f_div, f_pow, f_fac };
 
 //remove token->cdr, token->cdr->cdr because they have been calculated.
 static token_t *remake_tree(token_t *token) {
@@ -28,8 +29,12 @@ static double double_calc(token_t *token) {
 	token_t *operator = token->cdr->car;//operator
 	double value, result;
 	result = (eval(token->car))->decimal;//left number
-	value = (eval(token->cdr->cdr->car))->decimal;//right number
-	return (*f_func[operator->counter])(result, value);
+	if (operator->counter == 5) {
+		return (*f_func[operator->counter])(result, 0);
+	} else {
+		value = (eval(token->cdr->cdr->car))->decimal;//right number
+		return (*f_func[operator->counter])(result, value);
+	}
 }
 
 /*calculate multiplication and division first.
@@ -39,7 +44,11 @@ void f_calculate_priority(token_t *token) {
 	while (token->cdr->tt != CLOSE) {
 		if ((token->cdr->car->tt == OPERATOR) && (token->cdr->car->counter > 1)) {
 			ret = token_init(DOUBLE);
-			ret->decimal = double_calc(token);
+			if (token->cdr->car->counter == 5) {
+				ret->decimal = double_calc(token);
+			} else {
+				ret->decimal = double_calc(token);
+			}
 /*remake tree*/
 			tree_free(token->car);
 			token->car = ret;
@@ -86,9 +95,17 @@ static double f_div (double left_value, double right_value) {
 	return (left_value / right_value);
 }
 static double f_pow (double left_value, double right_value) {
-	int i, ret = 1;
+	double i, ret = 1.0;
 	for (i = 0; i < right_value; i++) {
 		ret *= left_value;
+	}
+	return ret;
+}
+static double f_fac (double left_value, double right_value) {
+	int i;
+	double ret = 1.0;
+	for (i = 1; i < left_value+1; i++) {
+		ret *= (double)i;
 	}
 	return ret;
 }

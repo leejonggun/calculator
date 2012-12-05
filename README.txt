@@ -20,7 +20,7 @@ build $ ./JOSEPH_CALC
 build $ ./JOSEPH_CALC [filename]	ex)$./JOSEPH_CALC ../test/nest.txt
 
 ・できることは以下の通りです。
-四則演算+,-,*,/,^(累乗)
+四則演算+,-,*,/,^(累乗),!(階乗)
 
 ・特徴
 まだ実装できていませんが、変数定義&呼び出し、関数定義&呼び出し、

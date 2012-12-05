@@ -6,8 +6,9 @@ static int i_sub (int left_value, int right_value);
 static int i_mul (int left_value, int right_value);
 static int i_div (int left_value, int right_value);
 static int i_pow (int left_value, int right_value);
+static int i_fac (int left_value, int right_value);
 
-static int (*i_func[])(int, int) = { i_add, i_sub, i_mul, i_div, i_pow };
+static int (*i_func[])(int, int) = { i_add, i_sub, i_mul, i_div, i_pow, i_fac };
 
 //remove token->cdr, token->cdr->cdr because they have been calculated.
 static token_t *remake_tree(token_t *token) {
@@ -25,12 +26,16 @@ static token_t *remake_tree(token_t *token) {
 /*This function is to calculate left_token and right_token*/
 int int_calc(token_t *token) {
 	/*ALL INT*/
-	token_t *operator = token->cdr->car;//operator
 	int value, result;
+	token_t *operator = token->cdr->car;//operator
 	result = (eval(token->car))->integer;//left number
-	value = (eval(token->cdr->cdr->car))->integer;//right number
-	return (*i_func[operator->counter])(result, value);
+	if (operator->counter == 5) {//factory (3!) doesn't have right number
+		return (*i_func[operator->counter])(result, 0);
+	} else {
+		value = (eval(token->cdr->cdr->car))->integer;//right number
+		return (*i_func[operator->counter])(result, value);
 	}
+}
 
 /*calculate multiplication and division first.
  And remake AST. After this function, The operator in AST will be only + and -*/
@@ -39,7 +44,11 @@ void i_calculate_priority(token_t *token) {
 	while (token->cdr->tt != CLOSE) {
 		if ((token->cdr->car->tt == OPERATOR) && (token->cdr->car->counter > 1)) {
 			ret = token_init(INT);
-			ret->integer = int_calc(token);
+			if (token->cdr->car->counter == 5) {
+				ret->integer = int_calc(token);
+			} else {
+				ret->integer = int_calc(token);
+			}
 /*remake tree*/
 			tree_free(token->car);
 			token->car = ret;
@@ -89,6 +98,13 @@ static int i_pow (int left_value, int right_value) {
 	int i, ret = 1;
 	for (i = 0; i < right_value; i++) {
 		ret *= left_value;
+	}
+	return ret;
+}
+static int i_fac (int left_value, int right_value) {
+	int i, ret = 1;
+	for (i = 1; i < left_value+1; i++) {
+		ret *= i;
 	}
 	return ret;
 }
