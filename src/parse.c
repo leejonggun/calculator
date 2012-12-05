@@ -40,9 +40,9 @@ static int check_nest(token_t *list) {
 }
 
 /*cons tree structure based on list*/
-token_t *Parse(token_t *root) {
+token_t *Parse(token_t *list_root) {
 	int counter = 0;//to parse nests
-	token_t *list = root;
+	token_t *list = list_root;
 	token_t *token_tree = token_init(OPEN);
 	token_t *token_root;
 	while (list->tt != CLOSE) {

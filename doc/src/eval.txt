@@ -1,0 +1,9 @@
+//Written bu Joseph
+
+token_t *eval(token_t *token):
+	arg.token:生成したツリー構造の最初。
+	1.作られたASTを元に評価していく。(計算していく)
+	2.token->carを呼ぶのでNULLチェックを行う。
+	3.'('が来た場合、評価スタート。入れ子の可能性もあるので、'('がもう一回来た場合、evalに投げる。
+	4.INTかDOUBLEが来た場合、次のトークンにはOPERATORが来ることが決まっている(syntax_checkにより)ので、計算する関数に投げる。
+	5.INTかDOUBLEがevalに投げられたら、そのまま返す。計算される数(OPERATORの前後のトークン)が入れ子になる可能性もあるので、直接数値を取り出さず、evalに投げる。

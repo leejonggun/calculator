@@ -1,0 +1,26 @@
+//Written by Joseph
+
+static void make_tree(token_t *tree, token_t *list)
+	arg.tree:ツリー構造のためのトークン, list:リスト構造のトークン
+	1.listが持っているtoken_type, str_size (or counter), strをコピーする
+	2.タイプによってコピーするものが違うので、場合分けをする
+	3.数字ならリストの持っているstrをint値かdouble値に変換する。
+	3.return値はツリー構造のためにデータが格納されたトークンを返す。
+
+static int check_nest(token_t *list)
+	arg.list:'('を持っているリスト
+	1.入れ子になっている場合を判断するため、'('がどの')'に対応しているのかチェック
+	2.いくつリストを進めたかを数える。
+	2.return値はリストを進めた回数。
+
+token_t *Parse(token_t *list_root)
+	arg.root:リストの最初のトークン
+	1.リストをひとつずつ進めながら、ツリー構造のtoken_tの*carに数字、演算子などの情報を格納
+	2.token_tの*cdrには次のtokenにつなげる。その際、入れ子になっているかどうかチェック。
+	3.return値はツリー構造のroot
+
+void tree_free(token_t *root)
+	arg.root:ツリー構造の最初。
+	1.ツリーを全てfreeする。
+	2.token->cdrでリストを進めながら、token->carに入っているデータをfreeする。
+	3.token->carをfreeした後、tokenもfree。

@@ -7,14 +7,14 @@ token_t *eval (token_t *token) {
 	switch (token->tt) {
 		case OPEN:
 			ret = token_init();
-			if (token->car->tt == INT||token->car->tt == OPEN) {
+			if (token->car != NULL && (token->car->tt == INT||token->car->tt == OPEN)) {
 				i_calculate_priority(token);
 				ret = i_calculate(token);
-			} else if (token->car->tt == DOUBLE||token->car->tt == OPEN) {
+			} else if (token->car != NULL && (token->car->tt == DOUBLE||token->car->tt == OPEN)) {
 				f_calculate_priority(token);
 				ret = f_calculate(token);
 			} else {
-				printf("error:After OPEN-token, NUMBER-token has to be.\n");
+				printf("error:After OPEN-token, NUMBER-token has to come.\n");
 				return NULL;
 			}
 			return ret;

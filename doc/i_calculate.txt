@@ -1,5 +1,4 @@
 //Written bu Joseph
-#include "main.h"
 
 static int i_add (int left_value, int right_value);
 static int i_sub (int left_value, int right_value);

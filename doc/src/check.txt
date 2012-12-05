@@ -1,0 +1,27 @@
+//Written by Joseph
+
+int position_check(token_t *tree)
+	arg.tree:ツリー構造の最初。
+	1.文法チェックを行う。NULLチェックを行う。'('の直後のトークンが演算子ならエラー。
+	2.')'の直前のトークンが演算子ならエラー。
+	3.数字が続けて入力された場合、エラー。
+	4.演算子が続けて入力された場合、エラー。
+
+static void change_int_to_double(token_t *root)
+	arg.root:リスト構造の最初。
+	1.読み込んだ文字列の中に小数があったら、計算が全て小数計算になるので、intをdoubleに変換する。
+
+static void check_double(token_t *root)
+	arg.root:リスト構造の最初。
+	1.読み込んだ文字列の中に小数がないかチェック。
+	2.あったら、change_int_to_double処理をする。
+
+static int check_overflow(token_t *root)
+	arg.root:リスト構造の最初。
+	1.読み込んだ文字列の中にあまりにも大きい数がないかチェック。
+	2.パソコンが処理できる桁数は10桁。
+
+int syntax_check(token_t *root, int count)
+	arg.root:リスト構造の最初, count:カッコの数。
+	1.'('の時 +1, ')'の時 -1されるので、文字列を全部読み込んだ時にはcount = 0になっているはず。countが0じゃなかったら、カッコの数が違うということ
+	2.tokenizeが終わった後に、必要な関数を全て呼び出す。
