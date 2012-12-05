@@ -20,7 +20,7 @@ build $ ./JOSEPH_CALC
 build $ ./JOSEPH_CALC [filename]	ex)$./JOSEPH_CALC ../test/nest.txt
 
 ・できることは以下の通りです。
-四則演算+,-,*,/
+四則演算+,-,*,/,^(累乗)
 
 ・特徴
 まだ実装できていませんが、変数定義&呼び出し、関数定義&呼び出し、
@@ -30,8 +30,8 @@ if文、while文、比較演算など機能拡張することができます。
 Ctrl-cを押す(quitと入力することでアプリ終了にする予定)
 
 ・シンタックスは次の通りです。
+必ず最初は'('で始まり、')'で終わらなければいけない
 '('と')'の数は一致しなければいけない
-四則演算
 例)
 ( 1 + 2 )->return 3
 ( 1 + (3 + 4) - 2 )->return 6
@@ -45,3 +45,7 @@ ERRORS
 (+1)->operator can't be just after '('
 (111111111111 + 1111111111111111)->Too big number
 ()->No token between '('~')'
+
+BUGS
+(+1) -> SEGV
+(-1) -> SEGV

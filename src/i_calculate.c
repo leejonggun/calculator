@@ -5,12 +5,11 @@ static int i_add (int left_value, int right_value);
 static int i_sub (int left_value, int right_value);
 static int i_mul (int left_value, int right_value);
 static int i_div (int left_value, int right_value);
+static int i_pow (int left_value, int right_value);
 
-static int (*i_func[])(int, int) = { i_add, i_sub, i_mul, i_div };
+static int (*i_func[])(int, int) = { i_add, i_sub, i_mul, i_div, i_pow };
 
-/*	token->cdr->cdr->cdr->car->tt should be next OPERATOR. This is garanteed by syntax_check()
-	But, token->cdr->car->tt is OPERATOR to have been calculated by above int_calc()*/
-//move token->cdr->cdr because token->cdr, token->cdr->cdr has been calculated.
+//remove token->cdr, token->cdr->cdr because they have been calculated.
 static token_t *remake_tree(token_t *token) {
 	do {
 		tree_free(token->car);
@@ -23,7 +22,6 @@ static token_t *remake_tree(token_t *token) {
 	return token;
 }
 
-/*token->car is left-num to be calculated, token->cdr->car is operator, and token->cdr->cdr->car is right-num to be calculated*/
 /*This function is to calculate left_token and right_token*/
 int int_calc(token_t *token) {
 	/*ALL INT*/
@@ -86,4 +84,11 @@ static int i_mul (int left_value, int right_value) {
 }
 static int i_div (int left_value, int right_value) {
 	return (left_value / right_value);
+}
+static int i_pow (int left_value, int right_value) {
+	int i, ret = 1;
+	for (i = 0; i < right_value; i++) {
+		ret *= left_value;
+	}
+	return ret;
 }

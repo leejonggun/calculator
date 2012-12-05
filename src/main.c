@@ -26,7 +26,7 @@ void commandline() {
 		if ((tree_root = Parse(list_root)) == NULL) {
 			continue;
 		}
-//		tree_print(tree_root);
+		tree_print(tree_root);
 		list_free(list_root);
 
 		/*eval*/
