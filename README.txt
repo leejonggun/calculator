@@ -3,6 +3,7 @@
 Lispを参考に計算機を作ります。
 /src -> 計算機のソースコード。全部でmain.c, tokenize.c, parse.c, print.c, check.c, eval.c
 /include -> ヘッダーファイル。main.hのみ。
+/doc -> 書くcファイルに関するドキュメント。API設計など
 /test -> test コード。
 /README.txt -> 説明書。
 /CMakeLists.txt -> cmakeの設定ファイル

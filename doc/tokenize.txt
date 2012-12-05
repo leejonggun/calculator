@@ -1,9 +1,37 @@
 //Written by Joseph
-#include "main.h"
 
-static void set_char(token_t *token, const char *buf, int count, token_type TYPE);
-static void set_str(token_t *token, const char *buf, int buf_len, token_type TYPE);
-token_t *token_init(token_type tt);
+token_t *Tokenize(const char *str)
+	arg.str:プロンプトから読み込んだ文字列
+	1.読み込んだstrを1文字ずつindexを進めながら、意味のある文字列に分割する。
+	2.分割したstrをtoken_tのstrに格納する。
+	3.token_tにはその他にトークンタイプ、サイズ、次のトークンへのポインタを持っていて、リスト構造になる。
+	4.return値はリストの最初のポインタになる。
+
+int pass_space(const char *input, int index)
+	arg.input:プロンプトから読み込んだ文字列, index:進めた文字数
+	1.スペースや改行、タブは文字列として何の意味も持っていないので飛ばす。(意味のある文字列の分割という意味があるので飛ばす)
+	2.return値はスペース、改行、タブを飛ばして、次の意味のある文字列が来たらそのindexを返す。
+
+void set_char(token_t *token, const char *buf, int count, token_type TYPE)
+	arg.token:データbuf, count, TYPEを格納するためのトークン, buf:格納する文字列, count:シンタックスチェックのための数字, TYPE:トークンのタイプ
+	1.文字列bufをtoken->strにstrncpyする。文字列が1文字の時使う。(カッコと演算子)
+	2.token->counterにcountを格納する。対応するカッコ'('と')'のcounterを一致させて後にシンタックスチェックに使う。
+	3.token->counterにcountを格納する。演算子の場合、+,-,*,/にそれぞれ0,1,2,3を割り振って関数ポインタに使う。(実装量が減る)
+	4.token->ttにトークンのタイプを表すTYPEを格納する。
+	5.以上でひとつの意味のある文字列を持つトークンができる
+	6.return値は情報が格納された token トークン
+
+void set_str(token_t *token, const char *buf, int buf_len, token_type TYPE)
+	arg.token:データbuf, buf_len, TYPEを格納するためのトークン, buf:格納する文字列, buf_len:文字列の長さ, TYPE:トークンのタイプ
+	1.文字列bufをtoken->strにstrncpyする。文字列が1文字以上の時使う。
+	3.token->str_sizeにbuf_lenを格納する。
+	4.token->ttにトークンのタイプを表すTYPEを格納する。
+	5.以上でひとつの意味のある文字列を持つトークンができる
+	6.return値は情報が格納された token トークン
+
+token_t *token_init(token_type tt)
+	arg.tt:トークンのタイプ
+	1.トークンのタイプしか持たない
 
 static int pass_space(const char *input, int index) {
 	int counter = 0;
@@ -15,7 +43,7 @@ static int pass_space(const char *input, int index) {
 
 token_t *Tokenize(const char *str) {
 	int size, index = 0;
-	int count = 0;// When OPEN bracket, counter++. When CLOSE bracket, counter--.
+	int count = 0;// When token bracket, counter++. When CLOSE bracket, counter--.
 	token_t *list = (token_t*)malloc(sizeof(token_t));
 	token_t *root = list;
 	int str_len = strlen(str);
@@ -28,8 +56,8 @@ token_t *Tokenize(const char *str) {
 				break;
 			case '(':
 				count++;
-				set_char(list, &str[index], count, OPEN);
-				list->cdr = token_init(OPEN);
+				set_char(list, &str[index], count, token);
+				list->cdr = token_init(token);
 				list = list->cdr;
 				index++;
 				break;
@@ -144,7 +172,7 @@ static void set_str(token_t *token, const char *buf, int buf_len, token_type TYP
 void list_free(token_t *root) {
 	token_t *del = root;
 	switch(del->tt) {
-		case OPEN:
+		case token:
 			while (del->cdr != NULL) {
 				list_free(del->cdr);
 				del = del->cdr;

@@ -1,0 +1,10 @@
+//Written by Joseph
+
+void list_printf(token_t *root):
+	1.rootはリスト構造の最初。読み込んだ文字列がきちんとリスト構造になっているか確認。(Debug用)
+	2.token->strに読み込んだ文字列が入っているか、token->cdrにリストを進めながら、リストの最後まで表示させる。
+
+void tree_print(token_t *root):
+	1.rootはツリー構造のroot。token->carには数字、演算子などのデータが入っているトークンが入っている。
+	2.token->cdrにリストとしてつなげる。
+	3.token->cdrにリストを進めながら、token->carの情報を表示させる。

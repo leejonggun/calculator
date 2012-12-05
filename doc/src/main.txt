@@ -1,0 +1,15 @@
+//Written by Joseph
+
+main(argc, argv[]):
+main -> 引数がない場合：インタラクティブに式を入力して計算する。-> command()
+main -> 引数がある場合：引数としてファイル名を与え、ファイルを1行毎に読み込んで、計算する。->readfile(argv)
+
+command():
+	1.while文でreadline()でプロンプトの生成、入力の読み込む。
+	2.読み込んだ入力文字列を元に
+	tokenize(list structure)->parse(AST)->evaluate->result
+	を行う。
+
+readfile(str):
+	1.while文でファイルに書かれている式をEOFまで1行ずつ読み込む
+	2.処理はcommand()と全く同じ
