@@ -47,10 +47,6 @@ token_t *Tokenize(const char *str) {
 					index++;
 				}
 				break;
-			case '^':
-				/*TODO*/
-			case '!':
-				/*TODO*/
 			case '+':
 				set_char(list, &str[index], 0, OPERATOR);
 				list->cdr = token_init(OPERATOR);
@@ -71,6 +67,18 @@ token_t *Tokenize(const char *str) {
 				break;
 			case '/':
 				set_char(list, &str[index], 3, OPERATOR);
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
+				index++;
+				break;
+			case '^':
+				set_char(list, &str[index], 4, OPERATOR);
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
+				index++;
+				break;
+			case '!':
+				set_char(list, &str[index], 5, OPERATOR);
 				list->cdr = token_init(OPERATOR);
 				list = list->cdr;
 				index++;

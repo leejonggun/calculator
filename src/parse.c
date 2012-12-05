@@ -23,7 +23,7 @@ static void make_tree(token_t *tree, token_t *list) {
 		case OPERATOR:
 			tree->str = (char *)malloc(sizeof(char) * 2);
 			tree->str = strncpy(tree->str, list->str, 1);
-			tree->str[2] = '\0';
+			tree->str[1] = '\0';
 			break;
 	}
 }
