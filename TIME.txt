@@ -15,3 +15,4 @@
 12/03,	11:30~13:30,	120m		multiply and divide work! It means this calculater works properly:) Next, refactoring and write documents.
 12/04,	22:20~01:50,	210m		refactoring tokenize, parse, eval and writing documents
 12/05,	20:50~23:00,	130m		try exponential(power) and factorial, write documents
+12/06,	21:30~22:00,	30m			comp exponential and factorial, write documents and prepare to submit
