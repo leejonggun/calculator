@@ -1,90 +1,39 @@
 //Written bu Joseph
-#include "main.h"
 
-static double double_calc(token_t *token);
-static double f_add (double left_value, double right_value);
-static double f_sub (double left_value, double right_value);
-static double f_mul (double left_value, double right_value);
-static double f_div (double left_value, double right_value);
+static double i_add (double left_value, double right_value)
+	left_valueとright_valueの足した結果を返す
+static double i_sub (double left_value, double right_value)
+	left_valueとright_valueの引いた結果を返す
+static double i_mul (double left_value, double right_value)
+	left_valueとright_valueの掛けた結果を返す
+static double i_div (double left_value, double right_value)
+	left_valueとright_valueの割った結果を返す
+static double i_pow (double left_value, double right_value)
+	left_valueをright_valueの回数だけ累乗した結果を返す
+static double i_fac (double left_value, double right_value)
+	left_valueの階乗したした結果を返す
 
-static double (*f_func[])(double, double) = { f_add, f_sub, f_mul, f_div };
+static double (*i_func[])(double, double) = { i_add, i_sub, i_mul, i_div, i_pow, i_fac };
+	関数ポインタとして登録する。それぞれOPERATORトークンのcounterに対応する。
 
-/*	token->cdr->cdr->cdr->car->tt should be next OPERATOR. This is garanteed by syntax_check()
-	But, token->cdr->car->tt is OPERATOR to have been calculated by above int_calc()*/
-//move token->cdr->cdr because token->cdr, token->cdr->cdr has been calculated.
-static token_t *remake_tree(token_t *token) {
-	do {
-		tree_free(token->car);
-		free(token);
-		token = token->cdr;
-		if (token->tt == CLOSE) {
-			return token;
-		}
-	} while (token->car->tt != OPERATOR);
-	return token;
-}
+//remove token->cdr, token->cdr->cdr because they have been calculated.
+static token_t *remake_tree(token_t *token)
+	token->cdr->carに格納されている演算子とtoken->cdr->cdr->carに格納されている数字は計算されたのでフリーして
+	ツリーを作り直す。
+
+/*This function is to calculate left_token and right_token*/
+double double_calc(token_t *token) {
+	token->carの数字とtoken->cdr->cdr->carの数字をtoken->cdr->carに格納されている演算子で計算する。
+	型は全てdouble値なので、結果もdouble値になる。
 
 /*calculate multiplication and division first.
- And remake AST. After this function, The operator in AST will be only + and -*/
-void f_calculate_priority(token_t *token) {
-	token_t *ret = NULL;
-	while (token->cdr->tt != CLOSE) {
-		if ((token->cdr->car->tt == OPERATOR) && (token->cdr->car->counter > 1)) {
-			ret = token_init(DOUBLE);
-			ret->decimal = double_calc(token);
-/*remake tree*/
-			tree_free(token->car);
-			token->car = ret;
-			token->cdr = remake_tree(token->cdr);
-/*remake tree*/
-		} else {
-			token = token->cdr->cdr;
-		}
-	}
-}
+ And remake AST. After this function, The operator in AST will be only + and -*/	
+void i_calculate_priority(token_t *token)
+	掛け算、割り算、階乗、累乗を足し算、引き算より先に計算する。
+	return値はなし。計算したトークンはフリーしてツリーを小さくしていく。
+
 
 /*calculate addition and subtraction.*/
-token_t *f_calculate(token_t *token) {
-	token_t *ret = NULL;
-	while (token->cdr->tt != CLOSE) {
-		if ((token->cdr->car->tt == OPERATOR)) {
-			ret = token_init(DOUBLE);
-			ret->decimal = double_calc(token);
-/*remake tree*/
-			tree_free(token->car);
-			token->car = ret;
-			token->cdr = remake_tree(token->cdr);
-/*remake tree*/
-		} else {
-			token = token->cdr->cdr;
-		}
-	}
-	if (token->cdr->tt == CLOSE) {
-		return token->car;
-	}
-	return ret;
-}
-
-/*token->car is left-num to be calculated, token->cdr->car is operator, and token->cdr->cdr->car is right-num to be calculated*/
-/*This function is to calculate left_token and right_token*/
-static double double_calc(token_t *token) {
-	/*ALL DOUBLE*/
-	token_t *operator = token->cdr->car;//operator
-	double value, result;
-	result = (eval(token->car))->decimal;//left number
-	value = (eval(token->cdr->cdr->car))->decimal;//right number
-	return (*f_func[operator->counter])(result, value);
-}
-
-static double f_add (double left_value, double right_value) {
-	return (left_value + right_value);
-}
-static double f_sub (double left_value, double right_value) {
-	return (left_value - right_value);
-}
-static double f_mul (double left_value, double right_value) {
-	return (left_value * right_value);
-}
-static double f_div (double left_value, double right_value) {
-	return (left_value / right_value);
-}
+token_t *i_calculate(token_t *token)
+	i_calculate_priorityの実行後、残った足し算や引き算の計算をする。
+	return値は計算結果を持ったdoubleタイプを持ったトークン
