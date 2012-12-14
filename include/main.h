@@ -10,24 +10,32 @@ typedef enum token_type {
 	OPEN, CLOSE, INT, DOUBLE, CHAR, OPERATOR
 } token_type;
 
+typedef enum list_type {
+	START, END, NODE
+} list_type;
+
 /*TO Debug. How to use type_name[token_type]*/
 extern char *type_name[];
 
 typedef struct token_t {
 	token_type tt;
+	list_type status;
+	struct token_t *next;
+
 	union{
 		char *str;
 		int integer;
 		double decimal;
-		struct token_t *car;
+		struct token_t *nested;
 	};
+
 	/*str_size means the size of char *str(including ingeger and decimal as string).
 	And, When this token is OPEN or CLOSE, counter means checking the number between OPEN bracket and CLOSE bracket*/
 	union {
 	int str_size;
 	int counter;
 	};
-	struct token_t *cdr;
+
 } token_t;
 
 /*tokenize.c*/
