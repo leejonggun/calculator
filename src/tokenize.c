@@ -5,20 +5,19 @@ static void set_char(token_t *token, const char *buf, int count, token_type TYPE
 static void set_str(token_t *token, const char *buf, int buf_len, token_type TYPE);
 token_t *token_init(token_type tt);
 
-//static int pass_space(const char *input, int index) {
-//	int counter = 0;
-//	while (input[index+counter] == ' ' || input[index+counter] == '\n' || input[index+counter] == '\t') {
-//		counter++;
-//	}
-//	return (index + counter);
-//}
+static int pass_space(const char *input, int index) {
+	int counter = 0;
+	while (input[index+counter] == ' ' || input[index+counter] == '\n' || input[index+counter] == '\t') {
+		counter++;
+	}
+	return (index + counter);
+}
 
 token_t *Tokenize(const char *str) {
 	int size, index = 0;
 	int count = 0;// When OPEN bracket, counter++. When CLOSE bracket, counter--.
 	token_t *list = (token_t*)malloc(sizeof(token_t));
 	token_t *root = list;
-	root->status = START;
 	int str_len = strlen(str);
 	while (index < str_len) {
 		switch (str[index]) {
@@ -30,68 +29,59 @@ token_t *Tokenize(const char *str) {
 			case '(':
 				count++;
 				set_char(list, &str[index], count, OPEN);
-				list->next = token_init(OPEN);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(OPEN);
+				list = list->cdr;
 				index++;
 				break;
 			case ')':
-//				index = pass_space(str, index);
+				index = pass_space(str, index);
 				if (index + 1 == str_len) {
 					set_char(list, &str[index], count, CLOSE);
-					list->next = NULL;
-					list->status = END;
+					list->cdr = NULL;
 					count--;
 					index++;
 				} else {
 					set_char(list, &str[index], count, CLOSE);
-					list->next = token_init(CLOSE);
-					list = list->next;
-					list->status = NODE;
+					list->cdr = token_init(CLOSE);
+					list = list->cdr;
 					count--;
 					index++;
 				}
 				break;
 			case '+':
 				set_char(list, &str[index], 0, OPERATOR);
-				list->next = token_init(OPERATOR);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
 				index++;
 				break;
 			case '-':
 				set_char(list, &str[index], 1, OPERATOR);
-				list->next = token_init(OPERATOR);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
 				index++;
 				break;
 			case '*':
 				set_char(list, &str[index], 2, OPERATOR);
-				list->next = token_init(OPERATOR);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
 				index++;
 				break;
 			case '/':
 				set_char(list, &str[index], 3, OPERATOR);
-				list->next = token_init(OPERATOR);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
 				index++;
 				break;
 			case '^':
 				set_char(list, &str[index], 4, OPERATOR);
-				list->next = token_init(OPERATOR);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
 				index++;
 				break;
 			case '!':
 				set_char(list, &str[index], 5, OPERATOR);
-				list->next = token_init(OPERATOR);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(OPERATOR);
+				list = list->cdr;
 				index++;
 				break;
 			case '0':
@@ -118,9 +108,8 @@ token_t *Tokenize(const char *str) {
 					set_str(list, &str[index], size, INT);
 				}
 				index += size;
-				list->next = token_init(INT);
-				list = list->next;
-				list->status = NODE;
+				list->cdr = token_init(INT);
+				list = list->cdr;
 				break;
 			default:
 				printf("You can't input alphabet.\n");
@@ -138,7 +127,7 @@ token_t *token_init(token_type tt) {
 	token_t *new = (token_t *)malloc(sizeof(token_t));
 	new->tt = tt;
 	new->str_size = 0;
-	new->next = NULL;
+	new->cdr = NULL;
 	new->str = NULL;
 	return new;
 }
@@ -165,9 +154,9 @@ void list_free(token_t *root) {
 	token_t *del = root;
 	switch(del->tt) {
 		case OPEN:
-			while (del->next != NULL) {
-				list_free(del->next);
-				del = del->next;
+			while (del->cdr != NULL) {
+				list_free(del->cdr);
+				del = del->cdr;
 			}
 			break;
 		case CLOSE:

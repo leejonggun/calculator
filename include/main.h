@@ -10,23 +10,18 @@ typedef enum token_type {
 	OPEN, CLOSE, INT, DOUBLE, CHAR, OPERATOR
 } token_type;
 
-typedef enum list_type {
-	START, END, NODE
-} list_type;
-
 /*TO Debug. How to use type_name[token_type]*/
 extern char *type_name[];
 
 typedef struct token_t {
 	token_type tt;
-	list_type status;
-	struct token_t *next;
+	struct token_t *cdr;
 
 	union{
 		char *str;
 		int integer;
 		double decimal;
-		struct token_t *nested;
+		struct token_t *car;
 	};
 
 	/*str_size means the size of char *str(including ingeger and decimal as string).
