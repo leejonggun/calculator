@@ -35,11 +35,10 @@ token_t *Tokenize(const char *str) {
 				break;
 			case ')':
 				index = pass_space(str, index);
-				if (index + 1 == str_len) {
+				if (index == str_len) {
 					set_char(list, &str[index], count, CLOSE);
 					list->cdr = NULL;
 					count--;
-					index++;
 				} else {
 					set_char(list, &str[index], count, CLOSE);
 					list->cdr = token_init(CLOSE);
@@ -116,9 +115,9 @@ token_t *Tokenize(const char *str) {
 				return NULL;
 		}
 	}
-//	if (syntax_check(root, count) == -1) {
-//		return NULL;
-//	}
+	if (syntax_check(root, count) == -1) {
+		return NULL;
+	}
 	return root;
 }
 

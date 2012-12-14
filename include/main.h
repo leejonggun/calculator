@@ -15,22 +15,19 @@ extern char *type_name[];
 
 typedef struct token_t {
 	token_type tt;
-	struct token_t *cdr;
-
 	union{
 		char *str;
 		int integer;
 		double decimal;
 		struct token_t *car;
 	};
-
 	/*str_size means the size of char *str(including ingeger and decimal as string).
 	And, When this token is OPEN or CLOSE, counter means checking the number between OPEN bracket and CLOSE bracket*/
 	union {
 	int str_size;
 	int counter;
 	};
-
+	struct token_t *cdr;
 } token_t;
 
 /*tokenize.c*/
