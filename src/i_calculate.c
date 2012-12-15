@@ -42,7 +42,9 @@ void i_calculate_priority(token_t *ret, token_t *token) {
 	while (token->cdr->cdr != NULL) {
 		if ((token->cdr->tt == OPERATOR) && (token->cdr->counter > 1)) {
 			ret->integer = int_calc(ret, token);
-//			tree_free(token->car);
+			if (token->tt == OPEN) {
+				tree_free(token->car);
+			}
 			token->tt = INT;
 			token->integer = ret->integer;
 /*remake tree*/

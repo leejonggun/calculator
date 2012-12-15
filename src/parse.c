@@ -85,23 +85,24 @@ token_t *Parse(token_t *list_root) {
 
 void tree_free(token_t *root) {
 	token_t *del = root;
-	switch(del->tt) {
-		case OPEN:
-			while (del->cdr != NULL) {
+	while (del->cdr != NULL) {
+		switch(del->tt) {
+			case OPEN:
 				tree_free(del->car);
 				free(del);
-				del = del->cdr;
-			}
-		case CLOSE:
-		case INT:
-		case DOUBLE:
-		case END:
-			free(del);
-			break;
-		case CHAR:
-		case OPERATOR:
-			free(del->str);
-			free(del);
-			break;
+				break;
+			case CLOSE:
+			case INT:
+			case DOUBLE:
+			case END:
+				free(del);
+				break;
+			case CHAR:
+			case OPERATOR:
+				free(del->str);
+				free(del);
+				break;
+		}
+		del = del->cdr;
 	}
 }

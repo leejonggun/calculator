@@ -33,7 +33,6 @@ void commandline() {
 		if ((result = eval(tree_root)) == NULL) {
 			continue;
 		}
-		tree_print(result);
 
 
 		if (result->tt == INT) {
@@ -59,7 +58,7 @@ void readfile (char *filename) {
 		exit(0);
 	}
 	while ((buf = fgets(buf, BUF_SIZE, fp)) != NULL) {
-		printf("buf = %s\n", buf);
+		printf("buf = %s", buf);
 
 		/*tokenize*/
 		if ((list_root = Tokenize(buf)) == NULL) {
@@ -78,13 +77,12 @@ void readfile (char *filename) {
 		if ((result = eval(tree_root)) == NULL) {
 			continue;
 		}
-		tree_print(result);
 
 
 		if (result->tt == END) {
-			printf("Answer = %d\n", result->integer);
+			printf("Answer = %d\n\n", result->integer);
 		} else if (result->tt == DOUBLE) {
-			printf("Answer = %f\n", result->decimal);
+			printf("Answer = %f\n\n", result->decimal);
 		}
 
 		tree_free(tree_root);
