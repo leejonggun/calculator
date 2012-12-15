@@ -5,13 +5,13 @@ static void set_char(token_t *token, const char *buf, int count, token_type TYPE
 static void set_str(token_t *token, const char *buf, int buf_len, token_type TYPE);
 token_t *token_init(token_type tt);
 
-static int pass_space(const char *input, int index) {
-	int counter = 0;
-	while (input[index+counter] == ' ' || input[index+counter] == '\n' || input[index+counter] == '\t') {
-		counter++;
-	}
-	return (index + counter);
-}
+//static int pass_space(const char *input, int index) {
+//	int counter = 0;
+//	while (input[index+counter] == ' ' || input[index+counter] == '\n' || input[index+counter] == '\t') {
+//		counter++;
+//	}
+//	return (index + counter);
+//}
 
 token_t *Tokenize(const char *str) {
 	int size, index = 0;
@@ -34,7 +34,7 @@ token_t *Tokenize(const char *str) {
 				index++;
 				break;
 			case ')':
-				index = pass_space(str, index);
+//				index = pass_space(str, index);
 				if (index == str_len) {
 					set_char(list, &str[index], count, CLOSE);
 					list->cdr = NULL;
