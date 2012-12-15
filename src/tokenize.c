@@ -6,11 +6,10 @@ static void set_str(token_t *token, const char *buf, int buf_len, token_type TYP
 token_t *token_init(token_type tt);
 
 //static int pass_space(const char *input, int index) {
-//	int counter = 0;
-//	while (input[index+counter] == ' ' || input[index+counter] == '\n' || input[index+counter] == '\t') {
-//		counter++;
+//	while (input[index + 1] == ' ' || input[index + 1] == '\n' || input[index + 1] == '\t') {
+//		index++;
 //	}
-//	return (index + counter);
+//	return index;
 //}
 
 token_t *Tokenize(const char *str) {
@@ -29,7 +28,7 @@ token_t *Tokenize(const char *str) {
 			case '(':
 				count++;
 				set_char(list, &str[index], count, OPEN);
-				list->cdr = token_init(OPEN);
+				list->cdr = token_init(END);
 				list = list->cdr;
 				index++;
 				break;
@@ -41,7 +40,7 @@ token_t *Tokenize(const char *str) {
 					count--;
 				} else {
 					set_char(list, &str[index], count, CLOSE);
-					list->cdr = token_init(CLOSE);
+					list->cdr = token_init(END);
 					list = list->cdr;
 					count--;
 					index++;
@@ -49,37 +48,37 @@ token_t *Tokenize(const char *str) {
 				break;
 			case '+':
 				set_char(list, &str[index], 0, OPERATOR);
-				list->cdr = token_init(OPERATOR);
+				list->cdr = token_init(END);
 				list = list->cdr;
 				index++;
 				break;
 			case '-':
 				set_char(list, &str[index], 1, OPERATOR);
-				list->cdr = token_init(OPERATOR);
+				list->cdr = token_init(END);
 				list = list->cdr;
 				index++;
 				break;
 			case '*':
 				set_char(list, &str[index], 2, OPERATOR);
-				list->cdr = token_init(OPERATOR);
+				list->cdr = token_init(END);
 				list = list->cdr;
 				index++;
 				break;
 			case '/':
 				set_char(list, &str[index], 3, OPERATOR);
-				list->cdr = token_init(OPERATOR);
+				list->cdr = token_init(END);
 				list = list->cdr;
 				index++;
 				break;
 			case '^':
 				set_char(list, &str[index], 4, OPERATOR);
-				list->cdr = token_init(OPERATOR);
+				list->cdr = token_init(END);
 				list = list->cdr;
 				index++;
 				break;
 			case '!':
 				set_char(list, &str[index], 5, OPERATOR);
-				list->cdr = token_init(OPERATOR);
+				list->cdr = token_init(END);
 				list = list->cdr;
 				index++;
 				break;
@@ -107,8 +106,12 @@ token_t *Tokenize(const char *str) {
 					set_str(list, &str[index], size, INT);
 				}
 				index += size;
-				list->cdr = token_init(INT);
-				list = list->cdr;
+				if (index == str_len) {
+					list->cdr = NULL;
+				} else {
+					list->cdr = token_init(END);
+					list = list->cdr;
+				}
 				break;
 			default:
 				printf("You can't input alphabet.\n");
@@ -166,5 +169,7 @@ void list_free(token_t *root) {
 			free(del->str);
 			free(del);
 			break;
+		case END:
+			free(del);
 	}
 }

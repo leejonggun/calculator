@@ -7,7 +7,7 @@
 #include <readline/history.h>
 
 typedef enum token_type {
-	OPEN, CLOSE, INT, DOUBLE, CHAR, OPERATOR
+	OPEN, CLOSE, INT, DOUBLE, CHAR, OPERATOR, END
 } token_type;
 
 /*TO Debug. How to use type_name[token_type]*/

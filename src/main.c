@@ -4,7 +4,7 @@
 #define BUF_SIZE 256
 
 /*TO Debug*/
-char *type_name[] = {"OPEN", "CLOSE", "INT", "DOUBLE", "CHAR", "OPERATOR", "COMP"};
+char *type_name[] = {"OPEN", "CLOSE", "INT", "DOUBLE", "CHAR", "OPERATOR", "END"};
 
 void commandline() {
 	char *line;

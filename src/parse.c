@@ -1,59 +1,6 @@
 //Written by Joseph
 #include "main.h"
 
-/*set elements each token from list properly*/
-static token_t *make_tree(token_t *tree, token_t *list) {
-	tree->tt = list->tt;
-	tree->str_size = list->str_size;
-	tree->cdr = NULL;
-	switch (tree->tt) {
-		case OPEN:
-			token_root = token_tree;
-			make_tree(token_tree, list);
-			/*Firstly, set an open bracket, then start tree structure*/
-			list = list->cdr;
-			while (list->tt != CLOSE) {
-				counter = 1;
-				if (list->tt == OPEN) {
-					/*count how many list-tokens should be skipped to cons a tree structure*/
-					counter += check_nest(list);
-				}
-				token_tree->car = Parse(list);
-				token_tree->cdr = token_init(OPEN);
-				token_tree = token_tree->cdr;
-					do {
-					/*skip '( ~ )' nest*/
-					list = list->cdr;
-					counter--;
-				} while (counter > 0);
-			}
-			/*CLOSE*/
-			make_tree(token_tree, list);
-			if (position_check(token_root) == -1) {
-				return NULL;
-			}
-			return token_tree;
-		case CLOSE:
-			/*MUST NOT*/
-			printf("error");
-			return NULL;
-		case INT:
-			tree->integer = atoi(list->str);
-			break;
-		case DOUBLE:
-			tree->decimal = atof(list->str);
-			break;
-		case CHAR:
-			/*TODO For Syntax*/
-			break;
-		case OPERATOR:
-			tree->str = (char *)malloc(sizeof(char) * 2);
-			tree->str = strncpy(tree->str, list->str, 1);
-			tree->str[1] = '\0';
-			break;
-	}
-}
-
 /*It means a correct nest that an OPEN-list->counter equals an CLOSE-list->counter.*/
 static int check_nest(token_t *list) {
 	token_t *start = list;
@@ -65,19 +12,75 @@ static int check_nest(token_t *list) {
 	return counter;
 }
 
+/*set elements each token from list properly*/
+static token_t *make_tree(token_t *tree, token_t *list) {
+	token_t *token_open;
+	tree->tt = list->tt;
+	tree->cdr = NULL;
+	switch (tree->tt) {
+		case OPEN:
+			token_open = tree;
+			tree->counter = list->counter;
+			list = list->cdr;
+			tree->car = Parse(list);
+//			if (position_check(token_open) == -1) {
+//				return NULL;
+//			}
+			return token_open;
+		case CLOSE:
+			tree->car = NULL;
+			tree->cdr = NULL;
+			tree->counter = list->counter;
+			break;
+		case INT:
+			tree->str_size = list->str_size;
+			tree->integer = atoi(list->str);
+			break;
+		case DOUBLE:
+			tree->str_size = list->str_size;
+			tree->decimal = atof(list->str);
+			break;
+		case CHAR:
+			/*TODO For Syntax*/
+			break;
+		case OPERATOR:
+			tree->counter = list->counter;
+			tree->str = (char *)malloc(sizeof(char) * 2);
+			tree->str = strncpy(tree->str, list->str, 1);
+			tree->str[1] = '\0';
+			break;
+		case END:
+			break;
+	}
+	return tree;
+}
+
 /*cons tree structure based on list*/
 token_t *Parse(token_t *list_root) {
 	int counter = 0;//to parse nests
 	token_t *list = list_root;
-	token_t *token_tree = token_init(OPEN);
-	token_t *token_root;
-	while (list->cdr != NULL) {
-		token_root = token_tree;
-		make_tree(token_tree, list);
-		/*Firstly, set an open bracket, then start tree structure*/
-		list = list->cdr;
-
-	return NULL;
+	token_t *token_tree = token_init(END);
+	token_t *token_root = token_tree;
+	while (list->cdr != NULL) {//Parse called in main.c, Parse called in case of OPEN nest
+		if (list->tt == CLOSE) {
+			token_tree = make_tree(token_tree, list);
+			return token_root;
+		}
+		if (list->tt == OPEN) {
+			counter = 1;
+			/*count how many list-tokens should be skipped to cons a tree structure*/
+			counter += check_nest(list);
+		}
+		token_tree = make_tree(token_tree, list);
+		token_tree->cdr = token_init(END);
+		token_tree = token_tree->cdr;
+		do {
+			/*skip '( ~ )' nest*/
+			list = list->cdr;
+			counter--;
+		} while (counter > 0);
+	}
+	return token_root;
 }
 
 void tree_free(token_t *root) {
@@ -99,5 +102,7 @@ void tree_free(token_t *root) {
 			free(del->str);
 			free(del);
 			break;
+		case END:
+			free(del);
 	}
 }

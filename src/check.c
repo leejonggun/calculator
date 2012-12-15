@@ -8,19 +8,19 @@ int position_check(token_t *tree) {
 	} else if (tree->car != NULL && tree->car->tt == OPERATOR) {
 		printf("operator can\'t be just after the first \'(\'\n");
 	}
-	while (tree->cdr->tt != CLOSE) {
-		if (tree->car->tt == tree->cdr->car->tt ||
-				(tree->car->tt == INT && tree->cdr->car->tt == DOUBLE) ||
-				(tree->car->tt == DOUBLE && tree->cdr->car->tt == INT)
-				) {
-			if (tree->car->tt == OPERATOR)
-				printf("No number between operators\n");
-			else if (tree->car->tt == INT || tree->car->tt == DOUBLE)
-				printf("No operator between numbers\n");
-			return -1;
-		}
-		tree = tree->cdr;
-	}
+//	while (tree->cdr->tt != CLOSE) {
+//		if (tree->car->tt == tree->cdr->car->tt ||
+//				(tree->car->tt == INT && tree->cdr->car->tt == DOUBLE) ||
+//				(tree->car->tt == DOUBLE && tree->cdr->car->tt == INT)
+//				) {
+//			if (tree->car->tt == OPERATOR)
+//				printf("No number between operators\n");
+//			else if (tree->car->tt == INT || tree->car->tt == DOUBLE)
+//				printf("No operator between numbers\n");
+//			return -1;
+//		}
+//		tree = tree->cdr;
+//	}
 	/*The token type before CLOSE bracket must be INT or DOUBLE*/
 	if (tree->car != NULL && tree->car->tt == OPERATOR && tree->car->counter != 5) {
 		printf("operator can\'t be just before the last \')\'\n");
