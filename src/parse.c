@@ -62,14 +62,14 @@ token_t *Parse(token_t *list_root) {
 	token_t *token_tree = token_init(END);
 	token_t *token_root = token_tree;
 	while (list->cdr != NULL) {//Parse called in main.c, Parse called in case of OPEN nest
-		if (list->tt == CLOSE) {
-			token_tree = make_tree(token_tree, list);
-			return token_root;
-		}
 		if (list->tt == OPEN) {
 			counter = 1;
 			/*count how many list-tokens should be skipped to cons a tree structure*/
 			counter += check_nest(list);
+		} else if (list->tt == CLOSE) {
+			/*make CLOSE token & the end of nest*/
+			token_tree = make_tree(token_tree, list);
+			return token_root;
 		}
 		token_tree = make_tree(token_tree, list);
 		token_tree->cdr = token_init(END);

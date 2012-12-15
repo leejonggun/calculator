@@ -20,7 +20,7 @@ void commandline() {
 		if ((list_root = Tokenize(line)) == NULL) {
 			continue;
 		}
-		list_print(list_root);
+//		list_print(list_root);
 
 		/*parse*/
 		if ((tree_root = Parse(list_root)) == NULL) {
@@ -30,20 +30,20 @@ void commandline() {
 		list_free(list_root);
 
 		/*eval*/
-		if ((result = eval(tree_root)) == NULL) {
-			continue;
-		}
+//		if ((result = eval(tree_root)) == NULL) {
+//			continue;
+//		}
 //		tree_print(result);
-
-
-		if (result->tt == INT) {
-			printf("Answer = %d\n", result->integer);
-		} else if (result->tt == DOUBLE) {
-			printf("Answer = %f\n", result->decimal);
-		}
-
-		tree_free(tree_root);
-		tree_free(result);
+//
+//
+//		if (result->tt == INT) {
+//			printf("Answer = %d\n", result->integer);
+//		} else if (result->tt == DOUBLE) {
+//			printf("Answer = %f\n", result->decimal);
+//		}
+//
+//		tree_free(tree_root);
+//		tree_free(result);
 		free(line);
 	}
 }
@@ -65,7 +65,7 @@ void readfile (char *filename) {
 		if ((list_root = Tokenize(buf)) == NULL) {
 			continue;
 		}
-		list_print(list_root);
+//		list_print(list_root);
 
 		/*parse*/
 		if ((tree_root = Parse(list_root)) == NULL) {
@@ -75,20 +75,20 @@ void readfile (char *filename) {
 		list_free(list_root);
 
 		/*eval*/
-		if ((result = eval(tree_root)) == NULL) {
-			continue;
-		}
+//		if ((result = eval(tree_root)) == NULL) {
+//			continue;
+//		}
 //		tree_print(result);
-
-
-		if (result->tt == INT) {
-			printf("Answer = %d\n", result->integer);
-		} else if (result->tt == DOUBLE) {
-			printf("Answer = %f\n", result->decimal);
-		}
-
-		tree_free(tree_root);
-		tree_free(result);
+//
+//
+//		if (result->tt == INT) {
+//			printf("Answer = %d\n", result->integer);
+//		} else if (result->tt == DOUBLE) {
+//			printf("Answer = %f\n", result->decimal);
+//		}
+//
+//		tree_free(tree_root);
+//		tree_free(result);
 	}
 	free(buf);
 }
