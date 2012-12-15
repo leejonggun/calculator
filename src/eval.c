@@ -7,25 +7,25 @@ token_t *eval (token_t *token) {
 	while (ret->cdr != NULL) {
 		ret = ret->cdr;
 	}
+	i_calculate_priority(ret, token);
+	ret = i_calculate(ret, token);
+	return ret;
+}
+
+token_t *get_value (token_t *token) {
+	token_t *ret = NULL;
 	switch (token->tt) {
 		case OPEN:
-			if (token->cdr != NULL && (token->cdr->tt == INT||token->cdr->tt == OPEN)) {
-				i_calculate_priority(ret, token);
-				ret = i_calculate(ret, token);
-			} else if (token->car != NULL && (token->car->tt == DOUBLE||token->car->tt == OPEN)) {
-				f_calculate_priority(token);
-				ret = f_calculate(token);
-			} else {
-				printf("error:After OPEN-token, NUMBER-token has to come.\n");
-				return NULL;
+			ret = token->car;
+			while (ret->tt != CLOSE) {
+				ret = ret->cdr;
 			}
-			return ret;
-		case INT:
-			printf("eval:int\n");
+			token = token->car;
 			i_calculate_priority(ret, token);
 			ret = i_calculate(ret, token);
-			printf("ret->integer=%d\n", ret->integer);
 			return ret;
+		case INT:
+			return token;
 		case DOUBLE:
 			return token;
 		case CHAR:

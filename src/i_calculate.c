@@ -27,11 +27,11 @@ int int_calc(token_t *ret, token_t *token) {
 	/*ALL INT*/
 	int value;
 	token_t *operator = token->cdr;//operator
-	ret->integer = (eval(token))->integer;//left number
+	ret->integer = (get_value(token))->integer;//left number
 	if (operator->counter == 5) {//factory (3!) doesn't have right number
 		return (*i_func[operator->counter])(ret->integer, 0);
 	} else {
-		value = (eval(token->cdr->cdr))->integer;//right number
+		value = (get_value(token->cdr->cdr))->integer;//right number
 		return (*i_func[operator->counter])(ret->integer, value);
 	}
 }
@@ -42,6 +42,8 @@ void i_calculate_priority(token_t *ret, token_t *token) {
 	while (token->cdr->cdr != NULL) {
 		if ((token->cdr->tt == OPERATOR) && (token->cdr->counter > 1)) {
 			ret->integer = int_calc(ret, token);
+//			tree_free(token->car);
+			token->tt = INT;
 			token->integer = ret->integer;
 /*remake tree*/
 			token->cdr = remake_tree(token->cdr);

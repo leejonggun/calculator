@@ -41,6 +41,7 @@ void tree_free(token_t *root);
 
 /*eval.c*/
 token_t *eval(token_t *token);
+token_t *get_value(token_t *token);
 
 /*print.c*/
 void tree_print(token_t *root);

@@ -95,6 +95,7 @@ void tree_free(token_t *root) {
 		case CLOSE:
 		case INT:
 		case DOUBLE:
+		case END:
 			free(del);
 			break;
 		case CHAR:
@@ -102,7 +103,5 @@ void tree_free(token_t *root) {
 			free(del->str);
 			free(del);
 			break;
-		case END:
-			free(del);
 	}
 }

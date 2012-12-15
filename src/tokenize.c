@@ -154,22 +154,24 @@ static void set_str(token_t *token, const char *buf, int buf_len, token_type TYP
 /*free all tokens in list*/
 void list_free(token_t *root) {
 	token_t *del = root;
-	switch(del->tt) {
-		case OPEN:
-			while (del->cdr != NULL) {
-				list_free(del->cdr);
-				del = del->cdr;
-			}
-			break;
-		case CLOSE:
-		case INT:
-		case DOUBLE:
-		case CHAR:
-		case OPERATOR:
-			free(del->str);
-			free(del);
-			break;
-		case END:
-			free(del);
+	while (del->cdr != NULL) {
+		switch(del->tt) {
+			case OPEN:
+				free(del->str);
+				free(del);
+				break;
+			case CLOSE:
+			case INT:
+			case DOUBLE:
+			case CHAR:
+			case OPERATOR:
+				free(del->str);
+				free(del);
+				break;
+			case END:
+				free(del);
+				break;
+		}
+	del = del->cdr;
 	}
 }
