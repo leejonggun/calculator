@@ -23,7 +23,7 @@ static token_t *remake_tree(token_t *token) {
 }
 
 /*This function is to calculate left_token and right_token*/
-int int_calc(token_t *ret, token_t *token) {
+static int int_calc(token_t *ret, token_t *token) {
 	/*ALL INT*/
 	int value;
 	token_t *operator = token->cdr;//operator
@@ -58,9 +58,15 @@ void i_calculate_priority(token_t *ret, token_t *token) {
 
 /*calculate addition and subtraction.*/
 token_t *i_calculate(token_t *ret, token_t *token) {
+	ret->integer = token->integer;
 	while (token->cdr->cdr != NULL) {
 		if ((token->cdr->tt == OPERATOR)) {
 			ret->integer = int_calc(ret, token);
+			if (token->tt == OPEN) {
+				tree_free(token->car);
+			}
+			token->tt = INT;
+			token->integer = ret->integer;
 /*remake tree*/
 			token->cdr = remake_tree(token->cdr);
 /*remake tree*/

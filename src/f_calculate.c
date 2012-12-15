@@ -13,45 +13,41 @@ static double (*f_func[])(double, double) = { f_add, f_sub, f_mul, f_div, f_pow,
 //remove token->cdr, token->cdr->cdr because they have been calculated.
 static token_t *remake_tree(token_t *token) {
 	do {
-		tree_free(token->car);
 		free(token);
 		token = token->cdr;
-		if (token->tt == CLOSE) {
+		if (token->cdr == NULL) {
 			return token;
 		}
-	} while (token->car->tt != OPERATOR);
+	} while (token->tt != OPERATOR);
 	return token;
 }
 
 /*This function is to calculate left_token and right_token*/
-static double double_calc(token_t *token) {
+static double double_calc(token_t *ret, token_t *token) {
 	/*ALL DOUBLE*/
-	token_t *operator = token->cdr->car;//operator
-	double value, result;
-	result = (eval(token->car))->decimal;//left number
-	if (operator->counter == 5) {
-		return (*f_func[operator->counter])(result, 0);
+	double value;
+	token_t *operator = token->cdr;//operator
+	ret->decimal = (get_value(token))->decimal;//left number
+	if (operator->counter == 5) {//factory (3!) doesn't have right number
+		return (*f_func[operator->counter])(ret->decimal, 0);
 	} else {
-		value = (eval(token->cdr->cdr->car))->decimal;//right number
-		return (*f_func[operator->counter])(result, value);
+		value = (get_value(token->cdr->cdr))->decimal;//right number
+		return (*f_func[operator->counter])(ret->decimal, value);
 	}
 }
 
 /*calculate multiplication and division first.
  And remake AST. After this function, The operator in AST will be only + and -*/
-void f_calculate_priority(token_t *token) {
-	token_t *ret = NULL;
-	while (token->cdr->tt != CLOSE) {
-		if ((token->cdr->car->tt == OPERATOR) && (token->cdr->car->counter > 1)) {
-			ret = token_init(DOUBLE);
-			if (token->cdr->car->counter == 5) {
-				ret->decimal = double_calc(token);
-			} else {
-				ret->decimal = double_calc(token);
+void f_calculate_priority(token_t *ret, token_t *token) {
+	while (token->cdr->cdr != NULL) {
+		if ((token->cdr->tt == OPERATOR) && (token->cdr->counter > 1)) {
+			ret->decimal = double_calc(ret, token);
+			if (token->tt == OPEN) {
+				tree_free(token->car);
 			}
+			token->tt = DOUBLE;
+			token->decimal = ret->decimal;
 /*remake tree*/
-			tree_free(token->car);
-			token->car = ret;
 			token->cdr = remake_tree(token->cdr);
 /*remake tree*/
 		} else {
@@ -61,23 +57,22 @@ void f_calculate_priority(token_t *token) {
 }
 
 /*calculate addition and subtraction.*/
-token_t *f_calculate(token_t *token) {
-	token_t *ret = NULL;
-	while (token->cdr->tt != CLOSE) {
-		if ((token->cdr->car->tt == OPERATOR)) {
-			ret = token_init(DOUBLE);
-			ret->decimal = double_calc(token);
+token_t *f_calculate(token_t *ret, token_t *token) {
+	ret->decimal = token->decimal;
+	while (token->cdr->cdr != NULL) {
+		if ((token->cdr->tt == OPERATOR)) {
+			ret->decimal = double_calc(ret, token);
+			if (token->tt == OPEN) {
+				tree_free(token->car);
+			}
+			token->tt = DOUBLE;
+			token->decimal = ret->decimal;
 /*remake tree*/
-			tree_free(token->car);
-			token->car = ret;
 			token->cdr = remake_tree(token->cdr);
 /*remake tree*/
 		} else {
 			token = token->cdr->cdr;
 		}
-	}
-	if (token->cdr->tt == CLOSE) {
-		return token->car;
 	}
 	return ret;
 }

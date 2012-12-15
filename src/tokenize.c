@@ -98,13 +98,8 @@ token_t *Tokenize(const char *str) {
 					set_str(list, &str[index], size, INT);
 				}
 				index += size;
-				if (index == str_len) {
-					list->cdr = token_init(END);
-					list = list->cdr;
-				} else {
-					list->cdr = token_init(END);
-					list = list->cdr;
-				}
+				list->cdr = token_init(END);
+				list = list->cdr;
 				break;
 			default:
 				printf("You can't input alphabet.\n");

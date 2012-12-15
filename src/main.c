@@ -20,13 +20,13 @@ void commandline() {
 		if ((list_root = Tokenize(line)) == NULL) {
 			continue;
 		}
-		list_print(list_root);
+//		list_print(list_root);
 
 		/*parse*/
 		if ((tree_root = Parse(list_root)) == NULL) {
 			continue;
 		}
-		tree_print(tree_root);
+//		tree_print(tree_root);
 		list_free(list_root);
 
 		/*eval*/
@@ -70,7 +70,7 @@ void readfile (char *filename) {
 		if ((tree_root = Parse(list_root)) == NULL) {
 			continue;
 		}
-		tree_print(tree_root);
+//		tree_print(tree_root);
 		list_free(list_root);
 
 		/*eval*/

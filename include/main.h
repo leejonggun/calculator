@@ -55,5 +55,5 @@ int position_check(token_t *root);
 void i_calculate_priority(token_t *ret, token_t *token);
 token_t *i_calculate(token_t *ret, token_t *token);
 /*f_calculate.c*/
-void f_calculate_priority(token_t *token);
-token_t *f_calculate(token_t *token);
+void f_calculate_priority(token_t *ret, token_t *token);
+token_t *f_calculate(token_t *ret, token_t *token);
