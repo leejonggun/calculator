@@ -5,13 +5,6 @@ static void set_char(token_t *token, const char *buf, int count, token_type TYPE
 static void set_str(token_t *token, const char *buf, int buf_len, token_type TYPE);
 token_t *token_init(token_type tt);
 
-//static int pass_space(const char *input, int index) {
-//	while (input[index + 1] == ' ' || input[index + 1] == '\n' || input[index + 1] == '\t') {
-//		index++;
-//	}
-//	return index;
-//}
-
 token_t *Tokenize(const char *str) {
 	int size, index = 0;
 	int count = 0;// When OPEN bracket, counter++. When CLOSE bracket, counter--.
@@ -33,7 +26,6 @@ token_t *Tokenize(const char *str) {
 				index++;
 				break;
 			case ')':
-//				index = pass_space(str, index);
 				if (index == str_len) {
 					set_char(list, &str[index], count, CLOSE);
 					list->cdr = NULL;
@@ -107,7 +99,8 @@ token_t *Tokenize(const char *str) {
 				}
 				index += size;
 				if (index == str_len) {
-					list->cdr = NULL;
+					list->cdr = token_init(END);
+					list = list->cdr;
 				} else {
 					list->cdr = token_init(END);
 					list = list->cdr;

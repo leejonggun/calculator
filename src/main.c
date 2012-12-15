@@ -20,7 +20,7 @@ void commandline() {
 		if ((list_root = Tokenize(line)) == NULL) {
 			continue;
 		}
-//		list_print(list_root);
+		list_print(list_root);
 
 		/*parse*/
 		if ((tree_root = Parse(list_root)) == NULL) {
@@ -35,7 +35,7 @@ void commandline() {
 		}
 
 
-		if (result->tt == INT) {
+		if (result->tt == END) {
 			printf("Answer = %d\n", result->integer);
 		} else if (result->tt == DOUBLE) {
 			printf("Answer = %f\n", result->decimal);
