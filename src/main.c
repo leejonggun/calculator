@@ -77,9 +77,9 @@ void readfile (char *filename) {
 		if ((result = eval(tree_root)) == NULL) {
 			continue;
 		}
+		tree_print(result);
 
-
-		if (result->tt == END) {
+		if (result->tt == INT) {
 			printf("Answer = %d\n\n", result->integer);
 		} else if (result->tt == DOUBLE) {
 			printf("Answer = %f\n\n", result->decimal);

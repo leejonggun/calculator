@@ -23,13 +23,9 @@ static token_t *make_tree(token_t *tree, token_t *list) {
 			tree->counter = list->counter;
 			list = list->cdr;
 			tree->car = Parse(list);
-//			if (position_check(token_open) == -1) {
-//				return NULL;
-//			}
 			return token_open;
 		case CLOSE:
 			tree->car = NULL;
-			tree->cdr = NULL;
 			tree->counter = list->counter;
 			break;
 		case INT:
