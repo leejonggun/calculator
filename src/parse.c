@@ -41,7 +41,11 @@ static token_t *make_tree(token_t *tree, token_t *list) {
 			tree->decimal = atof(list->str);
 			break;
 		case CHAR:
-			/*TODO For Syntax*/
+			/*for 'Ans' Syntax*/
+			tree->str_size = list->str_size;
+			tree->str = (char *)malloc(sizeof(char) * 2);
+			tree->str = strncpy(tree->str, list->str, list->str_size);
+			tree->str[list->str_size] = '\0';
 			break;
 		case OPERATOR:
 			tree->counter = list->counter;

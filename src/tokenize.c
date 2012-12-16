@@ -74,6 +74,18 @@ token_t *Tokenize(const char *str) {
 				list = list->cdr;
 				index++;
 				break;
+			case 'A'://To tokenize Ans
+				size = 3;
+				if (str[index+1] == 'n' && str[index+2] == 's') {
+					set_str(list, &str[index], size, CHAR);
+					list->cdr = token_init(END);
+					list = list->cdr;
+					index += size;
+					break;
+				} else {
+					printf("\'Ans\', which means previous Answer, is available. Please check your spelling.");
+					return NULL;
+				}
 			case '0':
 			case '1':
 			case '2':

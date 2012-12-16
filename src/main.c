@@ -35,7 +35,7 @@ void commandline() {
 		}
 
 
-		if (result->tt == END) {
+		if (result->tt == INT) {
 			printf("Answer = %d\n", result->integer);
 		} else if (result->tt == DOUBLE) {
 			printf("Answer = %f\n", result->decimal);

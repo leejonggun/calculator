@@ -10,8 +10,6 @@ typedef enum token_type {
 	OPEN, CLOSE, INT, DOUBLE, CHAR, OPERATOR, END
 } token_type;
 
-/*TO Debug. How to use type_name[token_type]*/
-extern char *type_name[];
 
 typedef struct token_t {
 	token_type tt;
@@ -29,6 +27,10 @@ typedef struct token_t {
 	};
 	struct token_t *cdr;
 } token_t;
+
+/*main.c*/
+/*TO Debug. How to use type_name[token_type]*/
+extern char *type_name[];
 
 /*tokenize.c*/
 token_t *Tokenize(const char *str);
