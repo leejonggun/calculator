@@ -1,6 +1,7 @@
 //Written bu Joseph
 #include "main.h"
 
+token_t *nest_value(token_t *ret, token_t *token);
 token_t *prev_ret = NULL;
 
 /* return the token has a certain value(answer).*/
@@ -48,6 +49,8 @@ token_t *get_value (token_t *token) {
 				f_calculate_priority(ret, token);
 				ret = f_calculate(ret, token);
 				ret->tt = DOUBLE;
+			} else if (check->tt == OPERATOR) {
+				ret = nest_value(ret, token);
 			}
 			return ret;
 		case INT:
@@ -71,4 +74,30 @@ token_t *get_value (token_t *token) {
 			break;
 	}
 	return NULL;
+}
+
+/*Handle (-1) or (+1). Some expression like (*2) is NG.*/
+token_t *nest_value(token_t *ret, token_t *token) {
+	token_t *operator = token;
+	token_t *number = token->cdr;
+	if (operator->counter == 0) {
+		if (number->tt == INT) {
+			ret->tt = INT;
+			ret->integer = number->integer;
+		} else if (token->cdr->tt == DOUBLE) {
+			ret->tt = DOUBLE;
+			ret->decimal = number->decimal;
+		}
+	} else if (operator->counter == 1) {
+		if (number->tt == INT) {
+			ret->tt = INT;
+			ret->integer = number->integer * (-1);
+		} else if (token->cdr->tt == DOUBLE) {
+			ret->tt = DOUBLE;
+			ret->decimal = number->decimal * (-1.0);
+		}
+	} else {
+		printf("Invalid number.\n");
+	}
+	return ret;
 }

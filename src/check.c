@@ -12,7 +12,7 @@ int position_check(token_t *tree) {
 	while (tree->cdr != NULL) {
 		if (tree->tt == OPEN) {
 			if (tree->cdr->tt == INT || tree->cdr->tt == DOUBLE) {
-				printf("You need one term at least.\n");
+				printf("No operator between numbers\n");
 				return -1;
 			}
 			ret = position_check(tree->car);

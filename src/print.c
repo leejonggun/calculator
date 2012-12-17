@@ -21,21 +21,23 @@ void tree_print(token_t *root) {
 	while (Debug != NULL) {
 		switch(Debug->tt) {
 			case OPEN:
-				printf("cdr->type = %s, car = %p, cdr = %p\n",type_name[Debug->tt], Debug->car, Debug->cdr);
+				printf("type = %s, car = %p, cdr = %p\n",type_name[Debug->tt], Debug->car, Debug->cdr);
+				printf("nest start\n");
 				tree_print(Debug->car);
+				printf("nest end\n");
 				break;
 			case CLOSE:
 				printf("type = %s, car = %p, cdr = %p\n",type_name[Debug->tt], Debug->car, Debug->cdr);
 				break;
 			case INT:
-				printf("type = %s, int = %d\n",type_name[Debug->tt], Debug->integer);
+				printf("type = %s, int = %d, cdr = %p\n",type_name[Debug->tt], Debug->integer, Debug->cdr);
 				break;
 			case DOUBLE:
-				printf("type = %s, double = %f\n",type_name[Debug->tt], Debug->decimal);
+				printf("type = %s, double = %f, cdr = %p\n",type_name[Debug->tt], Debug->decimal, Debug->cdr);
 				break;
 			case CHAR:
 			case OPERATOR:
-				printf("type = %s, str = %s, counter = %d\n",type_name[Debug->tt], Debug->str, Debug->counter);
+				printf("type = %s, str = %s, counter = %d, cdr = %p\n",type_name[Debug->tt], Debug->str, Debug->counter, Debug->cdr);
 				break;
 			case END:
 				printf("type = %s, car = %p, cdr = %p\n",type_name[Debug->tt], Debug->car, Debug->cdr);
