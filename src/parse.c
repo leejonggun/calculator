@@ -80,6 +80,9 @@ token_t *Parse(token_t *list_root) {
 			counter--;
 		} while (counter > 0);
 	}
+	if (position_check(token_root) == -1) {
+		return NULL;
+	}
 	return token_root;
 }
 

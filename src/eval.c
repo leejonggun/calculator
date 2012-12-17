@@ -7,11 +7,15 @@ token_t *prev_ret = NULL;
 token_t *eval (token_t *token) {
 	token_t *check = token;
 	token_t *ret = token;
+
+/*the case of one term*/
 	if(ret->cdr->tt == END) {
 		return get_value(token);
 	} else {
 		while (ret->cdr != NULL) { ret = ret->cdr; }
 	}
+
+/*the case of multi term*/
 	while (check->tt == OPEN) { check = check->car; }
 	if (check->tt == INT || check->tt == CHAR) {
 		i_calculate_priority(ret, token);

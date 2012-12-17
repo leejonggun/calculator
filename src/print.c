@@ -35,7 +35,7 @@ void tree_print(token_t *root) {
 				break;
 			case CHAR:
 			case OPERATOR:
-				printf("type = %s, str = %s, counet = %d\n",type_name[Debug->tt], Debug->str, Debug->counter);
+				printf("type = %s, str = %s, counter = %d\n",type_name[Debug->tt], Debug->str, Debug->counter);
 				break;
 			case END:
 				printf("type = %s, car = %p, cdr = %p\n",type_name[Debug->tt], Debug->car, Debug->cdr);
