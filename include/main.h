@@ -42,7 +42,7 @@ token_t *Parse(token_t *root);
 void tree_free(token_t *root);
 
 /*eval.c*/
-token_t *eval(token_t *token);
+token_t *Eval(token_t *token);
 token_t *get_value(token_t *token);
 
 /*print.c*/

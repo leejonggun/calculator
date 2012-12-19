@@ -30,7 +30,7 @@ void commandline() {
 		list_free(list_root);
 
 		/*eval*/
-		if ((result = eval(tree_root)) == NULL) {
+		if ((result = Eval(tree_root)) == NULL) {
 			continue;
 		}
 //		tree_print(result);
@@ -74,7 +74,7 @@ void readfile (char *filename) {
 		list_free(list_root);
 
 		/*eval*/
-		if ((result = eval(tree_root)) == NULL) {
+		if ((result = Eval(tree_root)) == NULL) {
 			continue;
 		}
 //		tree_print(result);

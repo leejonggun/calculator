@@ -3,22 +3,20 @@
 
 int position_check(token_t *tree) {
 	int ret = 0;
-//	if (tree->tt == CLOSE) {
-//		printf("No token between \'(\'~\')\'\n");
-//		return -1;
-//	} else if (tree->car != NULL && tree->car->tt == OPERATOR) {
-//		printf("operator can\'t be just after the first \'(\'\n");
-//	}
 	while (tree->cdr != NULL) {
 		if (tree->tt == OPEN) {
 			if (tree->cdr->tt == INT || tree->cdr->tt == DOUBLE) {
 				printf("No operator between numbers\n");
 				return -1;
 			}
+			if (tree->car->tt == CLOSE) {
+				printf("You need one term at least\n");
+				return -1;
+			}
 			ret = position_check(tree->car);
 		} else if (tree->tt == tree->cdr->tt ||
 				(tree->tt == INT && tree->cdr->tt == OPEN) ||
-				(tree->tt == DOUBLE && tree->cdr->tt == OPEN)// ||
+				(tree->tt == DOUBLE && tree->cdr->tt == OPEN)
 				) {
 			if (tree->tt == OPERATOR)
 				printf("No number between operators\n");

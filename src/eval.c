@@ -5,13 +5,14 @@ token_t *nest_value(token_t *ret, token_t *token);
 token_t *prev_ret = NULL;
 
 /* return the token has a certain value(answer).*/
-token_t *eval (token_t *token) {
+token_t *Eval (token_t *token) {
 	token_t *check = token;
 	token_t *ret = token;
 
 /*the case of one term*/
 	if(ret->cdr->tt == END) {
-		return get_value(token);
+		prev_ret = get_value(token);
+		return prev_ret;
 	} else {
 		while (ret->cdr != NULL) { ret = ret->cdr; }
 	}
@@ -59,8 +60,9 @@ token_t *get_value (token_t *token) {
 		case CHAR:
 			if (strncmp(token->str, "Ans", 3) == 0) {
 				if (prev_ret == NULL) {
+					printf("prev_ret = %p, car = %p, cdr = %p, prev_ret->integer = %d\n",prev_ret, prev_ret->car, prev_ret->cdr, prev_ret->integer);
 					printf("prev_ret is NULL. This is your first time to calculate.\n");
-					return NULL;
+					break;
 				}
 				return prev_ret;
 			} else {
