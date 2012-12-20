@@ -11,7 +11,7 @@ token_t *Eval (token_t *token) {
 
 /*the case of one term*/
 	if(ret->cdr->tt == END) {
-		prev_ret = get_value(token);
+		if ((prev_ret = get_value(token)) == NULL) { return NULL; }
 		return prev_ret;
 	} else {
 		while (ret->cdr != NULL) { ret = ret->cdr; }
@@ -60,8 +60,7 @@ token_t *get_value (token_t *token) {
 		case CHAR:
 			if (strncmp(token->str, "Ans", 3) == 0) {
 				if (prev_ret == NULL) {
-					printf("prev_ret = %p, car = %p, cdr = %p, prev_ret->integer = %d\n",prev_ret, prev_ret->car, prev_ret->cdr, prev_ret->integer);
-					printf("prev_ret is NULL. This is your first time to calculate.\n");
+					printf("This is your first calc. Previous answer is not exist.\n");
 					break;
 				}
 				return prev_ret;
