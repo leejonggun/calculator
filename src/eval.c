@@ -19,11 +19,11 @@ token_t *Eval (token_t *token) {
 
 /*the case of multi term*/
 	while (check->tt == OPEN) { check = check->car; }
-	if (check->tt == INT || check->tt == CHAR) {
+	if (check->tt == INT || check->tt == CHAR || check->tt == OPERATOR) {
 		i_calculate_priority(ret, token);
 		ret = i_calculate(ret, token);
 		ret->tt = INT;
-	} else if (check->tt == DOUBLE || check->tt == CHAR) {
+	} else if (check->tt == DOUBLE || check->tt == CHAR || check->tt == OPERATOR) {
 		f_calculate_priority(ret, token);
 		ret = f_calculate(ret, token);
 		ret->tt = DOUBLE;
