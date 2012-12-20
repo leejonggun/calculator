@@ -25,11 +25,11 @@ static token_t *remake_tree(token_t *token) {
 /*This function is to calculate left_token and right_token*/
 static double double_calc(token_t *ret, token_t *token) {
 	/*ALL DOUBLE*/
-	token_t *value;
+	token_t *value, *tmp;
 	token_t *operator = token->cdr;//operator
 	/*left number*/
-	if ((ret = get_value(token)) == NULL) { return 0; }
-	ret->decimal = (get_value(token))->decimal;
+	if ((tmp = get_value(token)) == NULL) { return 0; }
+	ret->decimal = tmp->decimal;
 	if (operator->counter == 5) {//factory (3!) doesn't have right number
 		return (*f_func[operator->counter])(ret->decimal, 0);
 	}
