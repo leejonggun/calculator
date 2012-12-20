@@ -3,13 +3,13 @@
 
 int position_check(token_t *tree) {
 	int ret = 0;
-	while (tree->cdr != NULL) {
+	while (tree->cdr->tt != END) {
 		if (tree->tt == OPEN) {
 			if (tree->cdr->tt == INT || tree->cdr->tt == DOUBLE) {
 				printf("No operator between numbers\n");
 				return -1;
 			}
-			if (tree->car->tt == CLOSE) {
+			if (tree->car->tt == END) {
 				printf("You need one term at least\n");
 				return -1;
 			}

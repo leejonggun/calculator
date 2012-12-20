@@ -27,11 +27,11 @@ token_t *Tokenize(const char *str) {
 				break;
 			case ')':
 				if (index == str_len) {
-					set_char(list, &str[index], count, CLOSE);
+					set_char(list, &str[index], count, END);
 					list->cdr = NULL;
 					count--;
 				} else {
-					set_char(list, &str[index], count, CLOSE);
+					set_char(list, &str[index], count, END);
 					list->cdr = token_init(END);
 					list = list->cdr;
 					count--;
@@ -160,7 +160,6 @@ void list_free(token_t *root) {
 				free(del->str);
 				free(del);
 				break;
-			case CLOSE:
 			case INT:
 			case DOUBLE:
 			case CHAR:

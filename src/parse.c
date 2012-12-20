@@ -5,7 +5,7 @@
 static int check_nest(token_t *list) {
 	token_t *start = list;
 	int counter = 0;
-	while (!(list->tt == CLOSE && start->counter == list->counter)) {
+	while (!(list->tt == END && start->counter == list->counter)) {
 		counter++;
 		list = list->cdr;
 	}
@@ -24,7 +24,7 @@ static token_t *make_tree(token_t *tree, token_t *list) {
 			list = list->cdr;
 			tree->car = Parse(list);
 			return token_open;
-		case CLOSE:
+		case END:
 			tree->car = NULL;
 			tree->counter = list->counter;
 			break;
@@ -49,8 +49,6 @@ static token_t *make_tree(token_t *tree, token_t *list) {
 			tree->str = strncpy(tree->str, list->str, 1);
 			tree->str[1] = '\0';
 			break;
-		case END:
-			break;
 	}
 	return tree;
 }
@@ -66,7 +64,7 @@ token_t *Parse(token_t *list_root) {
 			counter = 1;
 			/*count how many list-tokens should be skipped to cons a tree structure*/
 			counter += check_nest(list);
-		} else if (list->tt == CLOSE) {
+		} else if (list->tt == END) {
 			/*make CLOSE token & the end of nest*/
 			token_tree = make_tree(token_tree, list);
 			return token_root;
@@ -94,7 +92,6 @@ void tree_free(token_t *root) {
 				tree_free(del->car);
 				free(del);
 				break;
-			case CLOSE:
 			case INT:
 			case DOUBLE:
 			case END:

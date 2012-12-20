@@ -7,7 +7,7 @@
 #include <readline/history.h>
 
 typedef enum token_type {
-	OPEN, CLOSE, INT, DOUBLE, CHAR, OPERATOR, END
+	OPEN, INT, DOUBLE, CHAR, OPERATOR, END
 } token_type;
 
 

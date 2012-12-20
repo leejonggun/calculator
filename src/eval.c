@@ -40,7 +40,7 @@ token_t *get_value (token_t *token) {
 		case OPEN:
 			ret = token->car;
 			token = token->car;
-			while (ret->tt != CLOSE) { ret = ret->cdr; }
+			while (ret->tt != END) { ret = ret->cdr; }
 			while (check->tt == OPEN) { check = check->car; }
 			if (check->tt == INT) {
 				i_calculate_priority(ret, token);

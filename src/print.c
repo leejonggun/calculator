@@ -4,7 +4,7 @@
 void list_print(token_t *root) {
 	token_t *Debug = root;
 	while (Debug != NULL) {
-		if (Debug->tt == OPEN || Debug->tt == CLOSE) {
+		if (Debug->tt == OPEN || Debug->tt == END) {
 			printf("tt = %s, counter = %d, str = %s\n", type_name[Debug->tt], Debug->counter, Debug->str);
 		} else if (Debug->tt == END) {
 			printf("tt = %s, car = %p, cdr = %p\n", type_name[Debug->tt], Debug->car, Debug->cdr);
@@ -26,7 +26,7 @@ void tree_print(token_t *root) {
 				tree_print(Debug->car);
 				printf("nest end\n");
 				break;
-			case CLOSE:
+			case END:
 				printf("type = %s, car = %p, cdr = %p\n",type_name[Debug->tt], Debug->car, Debug->cdr);
 				break;
 			case INT:
@@ -39,8 +39,6 @@ void tree_print(token_t *root) {
 			case OPERATOR:
 				printf("type = %s, str = %s, counter = %d, cdr = %p\n",type_name[Debug->tt], Debug->str, Debug->counter, Debug->cdr);
 				break;
-			case END:
-				printf("type = %s, car = %p, cdr = %p\n",type_name[Debug->tt], Debug->car, Debug->cdr);
 		}
 		Debug = Debug->cdr;
 	}
